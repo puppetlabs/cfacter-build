@@ -142,7 +142,10 @@ nativeenv=$(if $(filter sparc,$(arch)),PATH=$(nativepath) CC=$(nativecc) CXX=$(n
 export SHELL=/bin/bash -e -o pipefail
 
 # redirect config make & make install output to a build.log
+# Use this if you dislike redirecting to logs
+ifndef nolog
 t=2>&1 | tee -a build.log >
+else
+t= && echo
+endif
 
-# Use this if you dislike redirecting to logs, and would rather roll your own
-#t= && echo
