@@ -8,7 +8,8 @@ $(eval $(call standard_x,$(yamlcpp_)))
 export YAMLCPP_ROOT=$(installroot)
 
 fetched/$(yamlcpp_).tar.gz:
-	$(wget) -P $(@D) 'https://yaml-cpp.googlecode.com/files/yaml-cpp-0.5.1.tar.gz'
+	$(wget) 'https://yaml-cpp.googlecode.com/files/$(yamlcpp_).tar.gz'
+	mv $(yamlcpp_).tar.gz $(@D)
 
 build/$(arch)/$(yamlcpp_)/._.config: source/$(yamlcpp_)/._.patch $(cmake) install/$(arch)/$(boost_)/._.install
 	(cd $(@D) && $(cmakecmd) \

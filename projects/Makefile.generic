@@ -1,7 +1,8 @@
 #  Generic definitions, override them to implement any specific behavior.
 
 fetched/%.tar.gz: | fetched
-	$(wget) -P $(@D) $(sourceurl)/$*.tar.gz
+	$(wget) $(sourceurl)/$*.tar.gz
+	mv $*.tar.gz $(@D)
 
 source/%/._.checkout: fetched/%.tar.gz | source/%
 	cat $< | (cd source/ && $(gzip) -dc | $(tar) -xf - )

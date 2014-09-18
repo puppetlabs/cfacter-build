@@ -12,15 +12,18 @@ gen-toolchain:
 	(cd /opt/ && $(tar) -cf - $(installlabel) ) | $(gzip) -c > fetched/sol-$(sys_rel)-i386-sparc-compilers.tar.gz
 	@echo $@ done
 
-fetched/$(compilergz):
-	$(wget) -P fetched/ $(toolurl)/$(sys_rel)/$(@F)
+fetched/sol-$(sys_rel)-%-compiler.tar.gz:
+	$(wget) $(toolurl)/$(sys_rel)/$(@F)
+	mv $(@F) fetched/
 	@echo $@ done
 
-$(cmake): | fetched/sol-$(sys_rel)-i386-compiler.tar.gz
-	cat $| | (cd /opt/ && $(gzip) -dc | $(tar) -xf - )
+$(cmake): | $(installroot)/i386/bin
+	@echo $@ done
 
-fetch-toolchain-$(arch): $(cmake) fetched/$(compilergz)
-	cat fetched/$(compilergz) | (cd /opt/ && $(gzip) -dc | $(tar) -xf - )
+$(installroot)/%/bin: fetched/sol-$(sys_rel)-%-compiler.tar.gz
+	cat $< | (cd /opt/ && $(gzip) -dc | $(tar) -xf - )
+
+fetch-toolchain-$(arch): $(cmake) | $(prefix)/bin
 	@echo $@ done
 
 make-toolchain-%: install/i386/$(cmake_)/._.install install/%/$(gcc_)/._.install

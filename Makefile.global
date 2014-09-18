@@ -59,7 +59,7 @@ fetched=$(addprefix fetched/,$(projects))
 # our touch files, which indicate that specific actions have completed
 # without errors.
 
-get_=$(addsuffix .tar.gz,$(addprefix fetched/,$(projects)))
+get_=$(addprefix fetched/,$(addsuffix .tar.gz,$(projects)) sol-$(sys_rel)-i386-compiler.tar.gz sol-$(sys_rel)-sparc-compiler.tar.gz)
 checkout_=$(addsuffix /._.checkout,$(addprefix source/,$(projects)))
 patch_=$(addsuffix /._.patch,$(addprefix source/,$(projects)))
 config_=$(addsuffix /._.config,$(addprefix build/$(arch)/,$(projects)))

@@ -6,7 +6,8 @@ names+=boost
 $(eval $(call standard_x,$(boost_)))
 
 fetched/$(boost_).tar.gz:
-	$(wget) -P $(@D) 'http://iweb.dl.sourceforge.net/project/boost/boost/1.55.0/$(boost_).tar.gz'
+	$(wget) 'http://iweb.dl.sourceforge.net/project/boost/boost/1.55.0/$(boost_).tar.gz'
+	mv $(boost_).tar.gz $(@D)
 
 userconfig='using gcc : $(gcc_ver) : $(gccpath)/bin/$(target)-g++ : <linkflags>"-Wl,-rpath=$(gccpath)/lib" ;'
 

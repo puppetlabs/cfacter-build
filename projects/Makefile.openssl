@@ -8,7 +8,8 @@ $(eval $(call standard_x,$(openssl_)))
 openssl_target=solaris-$(if $(filter sparc,$(arch)),sparcv9,x86)-gcc
 
 fetched/$(openssl_).tar.gz:
-	$(wget) -P $(@D) 'https://www.openssl.org/source/$(openssl_).tar.gz'
+	$(wget) 'https://www.openssl.org/source/$(openssl_).tar.gz'
+	mv $(openssl_).tar.gz $(@D)
 
 build/$(arch)/$(openssl_)/._.config: build/$(arch)/$(openssl_)/._.sync source/$(openssl_)/._.patch
 	(cd $(@D) && env \
