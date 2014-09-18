@@ -143,9 +143,8 @@ export SHELL=/bin/bash -e -o pipefail
 
 # redirect config make & make install output to a build.log
 # Use this if you dislike redirecting to logs
-ifndef nolog
 t=2>&1 | tee -a build.log >
-else
+ifdef nolog
 t= && echo
 endif
 

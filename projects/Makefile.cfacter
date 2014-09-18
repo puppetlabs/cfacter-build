@@ -2,11 +2,12 @@ cfacter_ver=0
 cfacter_=cfacter-$(cfacter_ver)
 projects+=$(cfacter_)
 names+=cfacter
+cfacter_clone=http://github.com/puppetlabs/cfacter
 
 $(eval $(call standard_x,$(cfacter_)))
 
 source/$(cfacter_)/._.checkout: | source/$(cfacter_)
-	$(git) clone git@github.com:puppetlabs/cfacter.git $(@D)
+	$(git) clone $(cfacter_clone) $(@D)
 	touch $@
 
 # Horrible hack
