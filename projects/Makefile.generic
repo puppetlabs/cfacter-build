@@ -24,8 +24,8 @@ build/$(arch)/%/._.make: build/$(arch)/%/._.config
 	touch $@
 
 clean-%:
-	(cd build/$(arch)/$*/ && $(MAKE) clean ) $(t) $@.log
-	rm -f \
+	- (cd build/$(arch)/$*/ && $(MAKE) clean ) $(t) $@.log
+	- rm -f \
 		build/$(arch)/$*/._.config \
 		build/$(arch)/$*/._.make \
 		install/$(arch)/$*/._.install
