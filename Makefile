@@ -47,6 +47,9 @@ all:
 	@echo "	$(MAKE) clean -- recursively cleans (* Only on full builds *)"
 	@echo "	$(MAKE) clobber -- removes source/ build/ install/"
 	@echo "sudo	$(MAKE) uninstall -- removes the $(installroot)"
+	@echo
+	@echo "info:"
+	@echo "Solaris 10 dependencies are available from http://pl-build-tools.delivery.puppetlabs.net/solaris/10/depends/"
 
 
 # Project specific makefiles
@@ -72,9 +75,10 @@ include projects/Makefile.cfacter
 # ENTRY
 # Clean out our builds
 clobber:
-	rm -rf build install source
+	rm -rf build install source build.log
 
-clean: $(addprefix clean-,$(names))
+clean: $(addprefix clean-,$(projects))
+	rm -f build.log
 	@echo $@ done
 
 # ENTRY
@@ -84,7 +88,9 @@ uninstall:
 	rm -rf $(installroot)
 
 prepare-10:
-	@echo
+	wget -q -r -nH --cut-dirs=2 --no-parent --reject "index.html*" --no-check-certificate -c $(toolurl)/10/depends/
+	echo "instance=overwrite\npartial=nocheck\nrunlevel=nocheck\nidepend=nocheck\nrdepend=nocheck\nspace=nocheck\nsetuid=nocheck\nconflict=nocheck\naction=nocheck\nbasedir=default" > depends/noask
+	- (cd depends; for i in *; do pkginfo $$i || (echo a; yes) | pkgadd -d . -a noask $$i ; done)
 
 prepare-11:
 	-pkg install developer/gcc-45
@@ -94,6 +100,7 @@ prepare-11:
 # This is to be the only command that requires `sudo` or root.
 # Use `sudo gmake prepare` to invoke.
 prepare: prepare-$(sys_rel)
+	mkdir -p fetched
 	rdate time.nist.gov
 	mkdir -p $(installroot)
 	chmod 777 $(installroot)
