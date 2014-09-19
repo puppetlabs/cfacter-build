@@ -39,6 +39,12 @@ gmake build arch=sparc
 
 The cfacter gets built in `./build/<arch>/cfacter-<ver>`
 
+If you are developing cfacter, then it may be better to
+fetch from your own repository, in which case, use the variable cfacter_clone like so
+```
+gmake build cfacter_clone=git@github.com:puppetlabs/cfacter.git
+```
+
 ## Intermediate
 
 ### Uninstall all we installed
