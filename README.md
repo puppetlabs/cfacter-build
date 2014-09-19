@@ -72,3 +72,15 @@ The compiler target is used to add a new dependency to the compiler while
 depends is used to add dependency to the cfacter itself. So if you want
 to add a project as cfacter dependency, use `depends: <myproject>` in your
 make file.
+
+Be sure to read the `projects/Makefile.generic`. It contains the default
+rules for building the project. If your dependency follows the standard
+build procedure, you can get by using just the base rules, but if it
+requires specific handling, you may need to specialize the pattern rules
+for your project.
+
+#### Adding patches
+
+All patches that are in the `patches/` directory, with the format 
+`<project>-<version>-***.patch` will be applied correctly to the project
+named by the standard pattern rule.
