@@ -2,6 +2,8 @@ cfacter-build
 =============
 ## Basics
 
+Feel free to stop and restart at any point of time. The build will restart at exactly the point it left off.
+
 ### Prepare
 
 For S10
