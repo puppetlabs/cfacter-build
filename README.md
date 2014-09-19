@@ -1,5 +1,7 @@
 cfacter-build
 =============
+## Basics
+
 ### Prepare
 
 For S10
@@ -29,3 +31,23 @@ sudo gmake prepare
 ```
 gmake build
 ```
+
+### Now for sparc
+```
+gmake build arch=sparc
+```
+
+The cfacter gets built in `./build/<arch>/cfacter-<ver>`
+
+## Intermediate
+
+### Uninstall all we installed
+```
+sudo gmake uninstall
+```
+### Return to the check-out state
+```
+gmake clobber
+```
+
+I typically invoke `sudo gmake uninstall prepare; gmake clobber` to start anew.
