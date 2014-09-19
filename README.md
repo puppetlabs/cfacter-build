@@ -51,3 +51,24 @@ gmake clobber
 ```
 
 I typically invoke `sudo gmake uninstall prepare; gmake clobber` to start anew.
+
+## Advanced
+### Logging
+
+To turn off the logging to build.log
+```
+gmake build nolog=1
+```
+You might also want to look at `Makefile.global::t` to customize other
+output options. e.g `gmake build t=" && echo "` for the above effect.
+
+### Adding a new dependency
+
+Copy `projects/Makefile.<e.g>` to your own project, and modify variables
+accordingly. We have examples of both `autoconf` and `cmake` builds.
+
+Notice that there are two targets: `compiler` and `depends`.
+The compiler target is used to add a new dependency to the compiler while
+depends is used to add dependency to the cfacter itself. So if you want
+to add a project as cfacter dependency, use `depends: <myproject>` in your
+make file.
