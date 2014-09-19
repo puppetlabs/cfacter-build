@@ -88,9 +88,9 @@ uninstall:
 	rm -rf $(installroot)
 
 prepare-10:
-	wget -q -r -nH --cut-dirs=2 --no-parent --reject "index.html*" --no-check-certificate -c $(toolurl)/10/depends/
+	$(wget) -r -nH --cut-dirs=2 --no-parent --reject "index.html*" --no-check-certificate -c $(toolurl)/10/depends/
 	echo "instance=overwrite\npartial=nocheck\nrunlevel=nocheck\nidepend=nocheck\nrdepend=nocheck\nspace=nocheck\nsetuid=nocheck\nconflict=nocheck\naction=nocheck\nbasedir=default" > depends/noask
-	- (cd depends; for i in *; do pkginfo $$i || (echo a; yes) | pkgadd -d . -a noask $$i ; done)
+	- cd depends; for i in SUNW*; do pkginfo $$i || (yes | pkgadd -d . -a noask $$i) ; done
 
 prepare-11:
 	-pkg install developer/gcc-45
