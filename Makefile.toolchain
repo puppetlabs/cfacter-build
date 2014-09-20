@@ -12,7 +12,7 @@ gen-toolchain:
 	(cd /opt/ && $(tar) -cf - $(installlabel) ) | $(gzip) -c > fetched/sol-$(sys_rel)-i386-sparc-compilers.tar.gz
 	@echo $@ done
 
-fetched/sol-$(sys_rel)-%-compiler.tar.gz:
+fetched/sol-$(sys_rel)-sparc-compiler.tar.gz fetched/sol-$(sys_rel)-i386-compiler.tar.gz:
 	$(wget) $(toolurl)/$(sys_rel)/$(@F)
 	mv $(@F) fetched/
 	@echo $@ done
