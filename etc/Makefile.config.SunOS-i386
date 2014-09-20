@@ -1,0 +1,91 @@
+# Platform specific definitions for solaris
+# -----------------------------------------------------------------------------
+#  These are arch dependent definitions for native and cross compilers.
+#  These should be moved to their own files, and included with
+#  `include Makefile.$(arch)` if ever the number of definitions increases
+#  further or any generic makefile rules are added for one of the platforms.
+#  Similarly, add `include Makefile.$(sys_rel)`
+#  and `include Makefile.$(arch).$(sys_rel)` if necessary.
+
+mytarget=$(if $(filter sparc,$1),sparc-sun,i386-pc)-solaris$(solaris_version)
+target=$(call mytarget,$(arch))
+# -----------------------------------------------------------------------------
+installroot=/opt/$(installlabel)
+prefix=$(installroot)/$(arch)
+sysroot=$(if $(filter sparc,$(arch)),--with-sysroot=$(prefix)/sysroot,)
+
+# The URL from where we get most of our sources.
+sourceurl=http://enterprise.delivery.puppetlabs.net/sources/solaris
+toolurl=https://pl-build-tools.delivery.puppetlabs.net/solaris
+
+
+# -----------------------------------------------------------------------------
+#  A few internal definitions. sys_rel decides whether
+#  we are building solaris 10 or solaris 11. Note that if we set sys_rel
+#  to 11 on a solaris 10 machine, gcc generates a cross compiler,
+#  (and v.v. for s11).
+
+sys_rel:=$(subst 5.,,$(shell uname -r))
+solaris_version=2.$(sys_rel)
+
+get_+=$(addprefix fetched/,sol-$(sys_rel)-i386-compiler.tar.gz sol-$(sys_rel)-sparc-compiler.tar.gz)
+
+# -----------------------------------------------------------------------------
+# Common tools
+ar=/usr/ccs/bin/ar
+tar=/usr/sfw/bin/gtar
+gzip=/bin/gzip
+gmake=/usr/sfw/bin/gmake
+bzip2=/bin/bzip2
+patch=/bin/gpatch
+rsync=/bin/rsync
+rdate=/bin/rdate
+wget=wget $(wget_opt)
+git=git
+
+as=$(prefix)/$(target)/bin/as
+ld=$(prefix)/$(target)/bin/ld
+cmake=$(installroot)/i386/bin/cmake
+
+# -----------------------------------------------------------------------------
+#  Directory we need created by make.
+sysdirs==$(installroot)/$(arch)/sysroot
+
+path= $(prefix)/$(target)/bin \
+     $(prefix)/bin \
+     $(gccpath)/bin \
+     /usr/ccs/bin \
+     /usr/gnu/bin \
+     /usr/bin \
+     /bin \
+     /sbin \
+     /usr/sbin \
+     /usr/sfw/bin \
+     /usr/perl5/5.8.4/bin \
+     /opt/csw/bin
+
+
+gccpath=$(installroot)/$(arch)
+gccnativepath=$(installroot)/i386
+cmakepath_=$(gccpath)/bin \
+          /usr/ccs/bin \
+          /usr/gnu/bin \
+          /usr/bin \
+          /bin \
+          /sbin \
+          /usr/sbin \
+          $(gccnativepath)/bin \
+          /usr/perl5/5.8.4/bin
+
+cmakepath=PATH=$(subst $(space),:,$(cmakepath_))
+
+withtoolchain=-DCMAKE_TOOLCHAIN_FILE=$(prefix)/sol-$(sys_rel)-$(arch)-toolchain.cmake
+cmakecmd=$(cmake) $(withtoolchain) $(cmakeverbose)
+
+# When building sparc packages, we want to build the cross compiler with the
+# native compiler we just built, rather than with the system gcc.
+nativepath=$(gccnativepath)/bin:$(PATH)
+nativecc=$(gccnativepath)/bin/$(call mytarget,i386)-gcc
+nativecxx=$(gccnativepath)/bin/$(call mytarget,i386)-g++
+nativeenv=$(if $(filter sparc,$(arch)),PATH=$(nativepath) CC=$(nativecc) CXX=$(nativecxx))
+

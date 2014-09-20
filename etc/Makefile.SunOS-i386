@@ -1,0 +1,26 @@
+all-SunOS-i386:
+	@echo "For Solaris:"
+	@echo "[arch] indicates that environmental variable arch={i386,sparc} is accepted"
+	@echo "$(MAKE) gentoolchain"
+	@echo "	For updating compilers (for later builds - needs both sparc and i386 compilers installed)"
+	@echo "$(MAKE) toolchain [arch={i386,sparc}] getcompilers=fetch"
+	@echo "	For using a prebuilt compiler:"
+
+
+prepare-SunOS-i386-10:
+	$(wget) -r -nH --cut-dirs=2 --no-parent --reject "index.html*" --no-check-certificate -c $(toolurl)/10/depends/
+	echo "instance=overwrite\npartial=nocheck\nrunlevel=nocheck\nidepend=nocheck\nrdepend=nocheck\nspace=nocheck\nsetuid=nocheck\nconflict=nocheck\naction=nocheck\nbasedir=default" > depends/noask
+	- cd depends; for i in SUNW*; do pkginfo $$i || (yes | pkgadd -d . -a noask $$i) ; done
+
+prepare-SunOS-i386-11:
+	-pkg install developer/gcc-45
+	-pkg install system/header
+
+prepare-SunOS-i386: prepare-SunOS-i386-$(sys_rel)
+	$(mkdir) $(installroot)
+	$(chmod) 777 $(installroot)
+	@echo done.
+
+uninstall-SunOS-i386: 
+	rm -rf $(installroot)
+
