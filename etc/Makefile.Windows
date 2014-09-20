@@ -1,0 +1,12 @@
+all-Windows:
+	@echo "For Windows:"
+	@echo "[arch] indicates that environmental variable arch={i386} is accepted"
+
+
+prepare-Windows:
+	$(mkdir) $(installroot)
+	@echo done.
+
+uninstall-WIndows: 
+	rm -rf $(installroot)
+
