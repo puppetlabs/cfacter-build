@@ -27,29 +27,39 @@
 #	 					< source/%/._.install
 # =============================================================================
 # Global definitions.
-include Makefile.global
+include etc/Makefile.config
 # -----------------------------------------------------------------------------
 
 # ENTRY
 all:
-	@echo "usage:"
-	@echo "sudo	$(MAKE) prepare -- creates the $(installroot) with permissions for current user"
-	@echo "	$(MAKE) [arch={i386,sparc}] [getcompilers={make,fetch}] build  -- does a full build including compilers and depends"
-	@echo "For updating compilers (for later builds - needs both sparc and i386 compilers installed)"
-	@echo "	$(MAKE) gentoolchain"
-	@echo "For using a prebuilt compiler:"
-	@echo "	$(MAKE) toolchain [arch={i386,sparc}] getcompilers=fetch"
-	@echo "install dependencies:"
-	@echo "	$(MAKE) depends [arch={i386,sparc}]"
-	@echo "compile cfacter:"
-	@echo "	$(MAKE) cfacter [arch={i386,sparc}]"
-	@echo "remove:"
-	@echo "	$(MAKE) clean -- recursively cleans (* Only on full builds *)"
-	@echo "	$(MAKE) clobber -- removes source/ build/ install/"
-	@echo "sudo	$(MAKE) uninstall -- removes the $(installroot)"
+	@echo "Basic Usage: For an initial build"
+	@echo "sudo $(MAKE) prepare; $(MAKE) build"
 	@echo
-	@echo "info:"
-	@echo "Solaris 10 dependencies are available from http://pl-build-tools.delivery.puppetlabs.net/solaris/10/depends/"
+	@echo "Basic Usage: For a completely clean build"
+	@echo "sudo $(MAKE) uninstall prepare; $(MAKE) build"
+	@echo
+	@echo "Intermediate Usage:"
+	@echo "sudo	$(MAKE) prepare"
+	@echo "	The above command ensures that system paths are created with correct permissions for current user"
+	@echo
+	@echo "$(MAKE) [arch] [getcompilers={make,fetch}] build"
+	@echo	"	This command accomplishes a build including compilers and depends"
+	@echo
+	@echo "$(MAKE) [arch] depends"
+	@echo "	The above command installs dependencies for cfacter"
+	@echo
+	@echo "$(MAKE) [arch] $(cfacter_)"
+	@echo "	The above command compiles cfacter"
+	@echo
+	@echo "$(MAKE) clean"
+	@echo "	Recursively cleans (* Only on full builds *)"
+	@echo "$(MAKE) clobber"
+	@echo "	Removes source/ build/ install/"
+	@echo "sudo	$(MAKE) uninstall"
+	@echo "	Removes the $(installroot)"
+	@echo
+	@echo "Platform specific options:"
+	@$(MAKE) all-$(os)
 
 
 # Project specific makefiles
@@ -67,7 +77,7 @@ include projects/Makefile.yamlcpp
 include projects/Makefile.openssl
 
 # Our toolchain that uses compiler suite
-include Makefile.toolchain
+include etc/Makefile.toolchain
 
 # CFacter tha tuses dependencies
 include projects/Makefile.cfacter
@@ -84,26 +94,14 @@ clean: $(addprefix clean-,$(projects))
 # ENTRY
 # Clean out the installed packages. Unfortunately, we also need to
 # redo the headers 
-uninstall:
-	rm -rf $(installroot)
-
-prepare-10:
-	$(wget) -r -nH --cut-dirs=2 --no-parent --reject "index.html*" --no-check-certificate -c $(toolurl)/10/depends/
-	echo "instance=overwrite\npartial=nocheck\nrunlevel=nocheck\nidepend=nocheck\nrdepend=nocheck\nspace=nocheck\nsetuid=nocheck\nconflict=nocheck\naction=nocheck\nbasedir=default" > depends/noask
-	- cd depends; for i in SUNW*; do pkginfo $$i || (yes | pkgadd -d . -a noask $$i) ; done
-
-prepare-11:
-	-pkg install developer/gcc-45
-	-pkg install system/header
+uninstall: uninstall-$(os)
+	@echo done.
 
 # ENTRY
 # This is to be the only command that requires `sudo` or root.
 # Use `sudo gmake prepare` to invoke.
-prepare: prepare-$(sys_rel)
-	mkdir -p fetched
-	rdate time.nist.gov
-	mkdir -p $(installroot)
-	chmod 777 $(installroot)
+prepare: prepare-$(os)
+	$(synctime)
 
 # ENTRY
 get: $(get_)
@@ -129,10 +127,12 @@ build:
 depends:
 	@echo $@ done
 
-$(mydirs): ; /bin/mkdir -p $@
+$(mydirs): ; $(mkdir) $@
 
 # Asking make not to delete any of our intermediate touch files.
 .PRECIOUS: $(get_) $(checkout_) $(patch_) \
 	         $(config_) $(make_) $(install_)
 
 .PHONY: build
+
+include etc/Makefile.$(os)
