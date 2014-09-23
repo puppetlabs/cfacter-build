@@ -1,3 +1,5 @@
+ifndef X_CMAKE
+
 cmake_ver=3.0.0
 cmake_=cmake-$(cmake_ver)
 projects+=$(cmake_)
@@ -55,4 +57,5 @@ compiler: cmake
 cmake: install-$(cmake_)
 	@echo $@ done
 
+endif
 # vim: set filetype=make :

@@ -1,3 +1,5 @@
+ifndef X_BOOST
+
 boost_ver=1_55_0
 boost_=boost_$(boost_ver)
 projects+=$(boost_)
@@ -48,3 +50,5 @@ depends: boost
 # ENTRY
 boost: install-$(boost_)
 	@echo $@ done
+
+endif
