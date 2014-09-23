@@ -92,3 +92,25 @@ for your project.
 All patches that are in the `patches/` directory, with the format 
 `<project>-<version>-***.patch` will be applied correctly to the project
 named by the standard pattern rule.
+
+#### Adding a new operating system
+
+cfacter-build chooses the operating system for the build from the value
+of `os` variable. This may be passed in from command line as `gmake os=Windows`
+for those platforms that do not have `uname` or equivalent. If not passed in,
+cfacter-build tries to figure out the operating system using uname, and
+includes `<Makefile>.$(os)` versions of each makefile. These are included
+at the end of each `<Makefile>` so that any definition may be overridden.
+
+Insepct the `etc/Makefile.config`, and add any variables to be overridden or
+new variables required for compilation, that is not relevant to other OS 
+to `etc/Makefile.config.<youros>` do the same for `etc/Makefile.<youros>` for any
+supporting recipes. You can try doing the same for `etc/Makefile.toolchain`
+or other Makefiles too. Ensure that the last line is `include <MyMakefile>.$(os)`
+if you are overriding variables in a Makefile.
+
+The same procedure applies to Makefiles under `projects`. But here, include your
+new makefile at the end of the particular project makefile as `-include project/Makefile.<project>.$(os)`
+so that gmake wont complain if it was not available for platforms that dont require it.
+
+
