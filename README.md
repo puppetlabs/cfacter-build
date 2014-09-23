@@ -113,4 +113,13 @@ The same procedure applies to Makefiles under `projects`. But here, include your
 new makefile at the end of the particular project makefile as `-include project/Makefile.<project>.$(os)`
 so that gmake wont complain if it was not available for platforms that dont require it.
 
-
+If you are adding a dependency which not common for all projects,
+project, then edit `Makefile` and add it to the list of project
+specific Makefiles, as `include project/Makefile.<myproject>`
+and use the template
+```
+ifndef X_<MYPROJ>
+<myrecipes>
+endif
+```
+so that platforms that dont need it can define X_MYPROJ to avoid it.
