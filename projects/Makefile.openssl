@@ -1,3 +1,5 @@
+ifndef X_OPENSSL
+
 openssl_ver=1.0.0n
 openssl_=openssl-$(openssl_ver)
 projects+=$(openssl_)
@@ -56,3 +58,5 @@ depends: openssl
 # ENTRY
 openssl: install-$(openssl_)
 	@echo $@ done
+
+endif

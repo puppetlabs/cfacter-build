@@ -1,3 +1,5 @@
+ifndef X_GCC
+
 gcc_ver=4.8.2
 gcc_=gcc-$(gcc_ver)
 projects+=$(gcc_)
@@ -43,3 +45,5 @@ compiler: gcc
 # ENTRY
 gcc: install-$(gcc_)
 	@echo $@ done
+
+endif

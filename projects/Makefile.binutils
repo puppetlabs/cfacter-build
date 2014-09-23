@@ -1,3 +1,5 @@
+ifndef X_BINUTILS
+
 binutils_ver=2.23.2
 binutils_=binutils-$(binutils_ver)
 projects+=$(binutils_)
@@ -21,3 +23,5 @@ compiler: binutils
 # ENTRY
 binutils: install-$(binutils_)
 	@echo $@ done
+
+endif
