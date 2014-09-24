@@ -41,7 +41,11 @@ patch=/bin/gpatch
 rsync=/bin/rsync
 rdate=/bin/rdate
 git=git
+ifeq ($(sys_rel),10)
+wget_=/opt/csw/bin/wget
+else
 wget_=/usr/sfw/bin/wget
+endif
 
 as=$(prefix)/$(target)/bin/as
 ld=$(prefix)/$(target)/bin/ld
