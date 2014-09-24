@@ -131,4 +131,4 @@ t= && echo
 endif
 
 # Give platform specific definitions a chance to override.
-include etc/Makefile.config.$(os)
+include etc/config/Makefile.$(os)

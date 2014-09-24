@@ -35,6 +35,7 @@ gmake build
 ```
 
 ### Now for sparc
+
 ```
 gmake build arch=sparc
 ```

@@ -37,7 +37,7 @@
 #
 # =============================================================================
 # Global definitions.
-include etc/Makefile.config
+include etc/config/Makefile
 # -----------------------------------------------------------------------------
 
 # ENTRY
@@ -52,10 +52,10 @@ all:
 include etc/Makefile.generic
 
 # Projects
-include etc/Makefile.build.$(os)
+include etc/build/Makefile.$(os)
 
 # toolchain
-include etc/Makefile.toolchain.$(os)
+include etc/toolchain/Makefile.$(os)
 
 # CFacter tha tuses dependencies
 include projects/cfacter/Makefile

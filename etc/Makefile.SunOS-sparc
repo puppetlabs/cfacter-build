@@ -1,0 +1,3 @@
+# inherit
+include etc/Makefile.SunOS-i386
+

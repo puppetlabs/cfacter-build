@@ -2,16 +2,6 @@ source/$(gcc_)/._.prereq: source/$(gcc_)/._.patch
 	(cd $(@D) && ./contrib/download_prerequisites ) $(t) $@.log
 	touch $@
 
-# extract the headers
-build/%/._.headers: fetched/%.sysroot.tar.gz | $(installroot)/%/sysroot build/%
-	cat $< | (cd $(installroot)/$*/sysroot && $(gzip) -dc | $(tar) -xf - )
-	touch $@
-
-get: fetched/sparc.sysroot.tar.gz
-
-# The sparc cross compiler requires the sparc system headers already present.
-build/sparc/$(gcc_)/._.config: build/sparc/._.headers
-
 # GCC depends on binutils being already installed.
 build/$(arch)/$(gcc_)/._.config: install/$(arch)/$(binutils_)/._.install
 
