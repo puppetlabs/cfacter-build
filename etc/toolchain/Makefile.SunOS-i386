@@ -26,8 +26,9 @@ $(installroot)/%/bin: | fetched/sol-$(sys_rel)-%-compiler.tar.gz
 fetch-toolchain-$(arch): $(cmake) | $(prefix)/bin
 	@echo $@ done
 
-make-toolchain-%: install/i386/$(cmake_)/._.install install/%/$(gcc_)/._.install
-	$(MAKE) cmakeenv arch=$(arch)
+make-toolchain-i386:
+	$(MAKE) -e install/i386/$(gcc_)/._.install
+	$(MAKE) cmakeenv arch=i386
 	@echo $@ done
 
 # getcompilers={fetch,make}

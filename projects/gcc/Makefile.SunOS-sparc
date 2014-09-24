@@ -1,5 +1,7 @@
 get: fetched/sparc.sysroot.tar.gz
 
+$(installroot)/%/sysroot: ; mkdir -p $@
+
 # extract the headers
 build/%/._.headers: fetched/%.sysroot.tar.gz | $(installroot)/%/sysroot build/%
 	cat $< | (cd $(installroot)/$*/sysroot && $(gzip) -dc | $(tar) -xf - )
