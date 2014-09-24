@@ -1,12 +1,3 @@
-ifndef X_YAMLCPP
-
-yamlcpp_ver=0.5.1
-yamlcpp_=yaml-cpp-$(yamlcpp_ver)
-projects+=$(yamlcpp_)
-names+=yaml-cpp
-
-$(eval $(call standard_x,$(yamlcpp_)))
-
 export YAMLCPP_ROOT=$(installroot)
 
 fetched/$(yamlcpp_).tar.gz:
@@ -20,11 +11,3 @@ build/$(arch)/$(yamlcpp_)/._.config: source/$(yamlcpp_)/._.patch $(cmake) instal
 		  -DYAML_CPP_BUILD_TOOLS=0 $(rootdir)/source/$(yamlcpp_) \
 	) $(t) $@.log
 	touch $@
-
-depends: yaml-cpp
-
-# ENTRY
-yaml-cpp: install-$(yamlcpp_)
-	@echo $@ done
-
-endif

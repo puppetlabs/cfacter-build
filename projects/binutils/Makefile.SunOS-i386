@@ -1,12 +1,3 @@
-ifndef X_BINUTILS
-
-binutils_ver=2.23.2
-binutils_=binutils-$(binutils_ver)
-projects+=$(binutils_)
-names+=binutils
-
-$(eval $(call standard_x,$(binutils_)))
-
 # config rules for binutils
 build/$(arch)/$(binutils_)/._.config: source/$(binutils_)/._.patch
 	(cd $(@D) && env $(nativeenv) $(rootdir)/source/$(binutils_)/configure \
@@ -18,10 +9,3 @@ build/$(arch)/$(binutils_)/._.config: source/$(binutils_)/._.patch
 	) $(t) $@.log
 	touch $@
 
-compiler: binutils
-
-# ENTRY
-binutils: install-$(binutils_)
-	@echo $@ done
-
-endif

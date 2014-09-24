@@ -1,12 +1,3 @@
-ifndef X_CMAKE
-
-cmake_ver=3.0.0
-cmake_=cmake-$(cmake_ver)
-projects+=$(cmake_)
-names+=cmake
-
-$(eval $(call standard_x,$(cmake_)))
-
 cmaketoolchain=sol-$(sys_rel)-$(arch)-toolchain.cmake
 .PRECIOUS: $(installroot)/$(arch)/$(cmaketoolchain)
 
@@ -51,11 +42,3 @@ cmakeenv: $(installroot)/$(arch)/$(cmaketoolchain)
 		> $<
 
 	@echo $@ done
-
-compiler: cmake
-
-cmake: install-$(cmake_)
-	@echo $@ done
-
-endif
-# vim: set filetype=make :

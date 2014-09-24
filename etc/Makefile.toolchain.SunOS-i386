@@ -20,8 +20,8 @@ fetched/sol-$(sys_rel)-sparc-compiler.tar.gz fetched/sol-$(sys_rel)-i386-compile
 $(cmake): | $(installroot)/i386/bin
 	@echo $@ done
 
-$(installroot)/%/bin: fetched/sol-$(sys_rel)-%-compiler.tar.gz
-	cat $< | (cd /opt/ && $(gzip) -dc | $(tar) -xf - )
+$(installroot)/%/bin: | fetched/sol-$(sys_rel)-%-compiler.tar.gz
+	cat $| | (cd /opt/ && $(gzip) -dc | $(tar) -xf - )
 
 fetch-toolchain-$(arch): $(cmake) | $(prefix)/bin
 	@echo $@ done

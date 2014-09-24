@@ -1,12 +1,3 @@
-ifndef X_GCC
-
-gcc_ver=4.8.2
-gcc_=gcc-$(gcc_ver)
-projects+=$(gcc_)
-names+=gcc
-
-$(eval $(call standard_x,$(gcc_)))
-
 source/$(gcc_)/._.prereq: source/$(gcc_)/._.patch
 	(cd $(@D) && ./contrib/download_prerequisites ) $(t) $@.log
 	touch $@
@@ -39,11 +30,3 @@ build/$(arch)/$(gcc_)/._.config: source/$(gcc_)/._.patch source/$(gcc_)/._.prere
 			-v \
 	) $(t) $@.log
 	touch $@
-
-compiler: gcc
-
-# ENTRY
-gcc: install-$(gcc_)
-	@echo $@ done
-
-endif

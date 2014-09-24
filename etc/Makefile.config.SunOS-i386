@@ -40,8 +40,8 @@ bzip2=/bin/bzip2
 patch=/bin/gpatch
 rsync=/bin/rsync
 rdate=/bin/rdate
-wget=wget $(wget_opt)
 git=git
+wget_=/usr/sfw/bin/wget
 
 as=$(prefix)/$(target)/bin/as
 ld=$(prefix)/$(target)/bin/ld

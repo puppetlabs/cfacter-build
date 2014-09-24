@@ -1,53 +1,76 @@
 #  Generic definitions, override them to implement any specific behavior.
+#
+# IMPORTANT
+#   If you introduce a new recipe, make sure to only specify the particular
+#   `actions` that you need to take, and define the action elsewhere. For
+#   example, to remove a file/folder, define _remove_ and then define remove
+#   in Makefile.config as rm -rf. This way, you can override them later in
+#   your platform config file. Remember, you can override variables, but
+#   overriding full recipes is discouraged (but specialization of pattern
+#   rules is allowed).
+#
 
-fetched/%.tar.gz: | fetched
-	$(wget) $(sourceurl)/$*.tar.gz
-	mv $*.tar.gz $(@D)
 
-source/%/._.checkout: fetched/%.tar.gz | source/%
-	cat $< | (cd source/ && $(gzip) -dc | $(tar) -xf - )
-	touch $@
+# A macro to make sure that if what we fetch is incomplete, we dont continue
+# if interrrupted without retriving it completely.
+
+define fetch_x
+	$(wget) $(1)/$(2) && $(move) $(2) $(3)
+endef
+
+# A pattern to fetch any thing from our sourceurl.
+fetched/%: | fetched
+	$(call fetch_x,$(sourceurl),$*,$(@D))
+
+# To ensure that a project is checked out in source/,
+# we need to extract the fetched targz to the correct directory. This is a
+# pattern rule, so provide the full path to source/*/._.checkout to override
+# it for specific projects that have different source urls or compression
+# mechanisms.
+source/%/._.checkout: fetched/%.$(tgz) | source/%
+	$(extractgz) $< source/
+	$(touch) $@
 
 # We have a few patches now. so
 source/%/._.patch: source/%/._.checkout
-	set +o pipefail; cat -s patches/$*-* | (cd $(@D) && $(patch) -p1 )
-	touch $@
+	$(patchall) $* $(@D)
+	$(touch) $@
 
 # we cant predict the options to be passed to config, so we only have
 # a skeletal rule here. Override them for specific projects.
 build/$(arch)/%/._.config: source/%/._.patch | build/$(arch)/%
-	touch $@
+	$(touch) $@
 
 # In general make should be just make
 build/$(arch)/%/._.make: build/$(arch)/%/._.config
 	(cd $(@D) && $(MAKE) ) $(t) $@.log
-	touch $@
+	$(touch) $@
 
 clean-%:
 	- (cd build/$(arch)/$*/ && $(MAKE) clean ) $(t) $@.log
-	- rm -f \
+	- $(remove) \
 		build/$(arch)/$*/._.config \
 		build/$(arch)/$*/._.make \
 		install/$(arch)/$*/._.install
 
 clobber-%:
-	rm -rf build/$(arch)/$* source/$*
+	$(remove) build/$(arch)/$* source/$*
 
 build-%: build/$(arch)/%/._.make
-	  @echo $@ done
+	@$(echo) $@ done
 
 install-%: install/$(arch)/%/._.install
-	  @echo $@ done
+	@$(echo) $@ done
 
 # And make install should work.
 install/$(arch)/%/._.install: build/$(arch)/%/._.make | install/$(arch)/%
 	(cd $(<D) && $(MAKE) install ) $(t) $@.log
-	touch $@
+	$(touch) $@
 
 # If we want the source under build, then use this as a dependency
 build/$(arch)/%/._.sync:  source/%/._.patch | build/$(arch)/%
-	(cd $(<D) && $(tar) -cf - . ) | (cd $(@D) && $(tar) -xf -)
-	touch $@
+	$(syncdir) $(<D) $(@D)
+	$(touch) $@
 
 # GMake does not honor dependency lines with pattern (%) in them
 # unless it is a make recipe. So we are stuck with having to create

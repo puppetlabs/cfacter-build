@@ -1,12 +1,3 @@
-ifndef X_OPENSSL
-
-openssl_ver=1.0.0n
-openssl_=openssl-$(openssl_ver)
-projects+=$(openssl_)
-names+=openssl
-
-$(eval $(call standard_x,$(openssl_)))
-
 openssl_target=solaris-$(if $(filter sparc,$(arch)),sparcv9,x86)-gcc
 
 fetched/$(openssl_).tar.gz:
@@ -52,11 +43,3 @@ build/$(arch)/$(openssl_)/._.make: build/$(arch)/$(openssl_)/._.makedepend
 install/$(arch)/$(openssl_)/._.install: build/$(arch)/$(openssl_)/._.make
 	(cd $(<D) && $(MAKE) SHELL=/bin/bash install ; ln -sf $(prefix)/$(target)/lib/libcrypto.so.1.0.0 $(prefix)/lib/libcrypto.so.1.0.0 ) $(t) $@.log
 	touch $@
-
-depends: openssl
-
-# ENTRY
-openssl: install-$(openssl_)
-	@echo $@ done
-
-endif

@@ -1,11 +1,3 @@
-ifndef X_BOOST
-
-boost_ver=1_55_0
-boost_=boost_$(boost_ver)
-projects+=$(boost_)
-names+=boost
-
-$(eval $(call standard_x,$(boost_)))
 
 fetched/$(boost_).tar.gz:
 	$(wget) 'http://iweb.dl.sourceforge.net/project/boost/boost/1.55.0/$(boost_).tar.gz'
@@ -44,11 +36,3 @@ install/$(arch)/$(boost_)/._.install: build/$(arch)/$(boost_)/._.make
 		install \
 	) $(t) $@.log
 	touch $@
-
-depends: boost
-
-# ENTRY
-boost: install-$(boost_)
-	@echo $@ done
-
-endif

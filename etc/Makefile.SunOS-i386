@@ -6,9 +6,8 @@ all-SunOS-i386:
 	@echo "$(MAKE) toolchain [arch={i386,sparc}] getcompilers=fetch"
 	@echo "	For using a prebuilt compiler:"
 
-
 prepare-SunOS-i386-10:
-	$(wget) -r -nH --cut-dirs=2 --no-parent --reject "index.html*" --no-check-certificate -c $(toolurl)/10/depends/
+	$(fetchdir) $(toolurl)/10/depends/
 	echo "instance=overwrite\npartial=nocheck\nrunlevel=nocheck\nidepend=nocheck\nrdepend=nocheck\nspace=nocheck\nsetuid=nocheck\nconflict=nocheck\naction=nocheck\nbasedir=default" > depends/noask
 	- cd depends; for i in SUNW*; do pkginfo $$i || (yes | pkgadd -d . -a noask $$i) ; done
 
