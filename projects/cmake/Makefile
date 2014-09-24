@@ -8,6 +8,6 @@ $(eval $(call standard_x,$(cmake_)))
 compiler: cmake
 
 cmake: install-$(cmake_)
-	@echo $@ done
+	@$(echo) $@ done
 
 -include projects/cmake/Makefile.$(os)

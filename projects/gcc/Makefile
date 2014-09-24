@@ -9,7 +9,7 @@ compiler: gcc
 
 # ENTRY
 gcc: install-$(gcc_)
-	@echo $@ done
+	@$(echo) $@ done
 
 -include projects/gcc/Makefile.$(os)
 

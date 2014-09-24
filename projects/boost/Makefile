@@ -9,6 +9,6 @@ depends: boost
 
 # ENTRY
 boost: install-$(boost_)
-	@echo $@ done
+	@$(echo) $@ done
 
 -include projects/boost/Makefile.$(os)

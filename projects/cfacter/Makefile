@@ -9,6 +9,6 @@ $(eval $(call standard_x,$(cfacter_)))
 program: cfacter
 
 cfacter: build/$(arch)/$(cfacter_)/._.make
-	@echo $@ done
+	@$(echo) $@ done
 
 -include projects/cfacter/Makefile.$(os)

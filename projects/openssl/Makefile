@@ -9,6 +9,6 @@ depends: openssl
 
 # ENTRY
 openssl: install-$(openssl_)
-	@echo $@ done
+	@$(echo) $@ done
 
 -include projects/openssl/Makefile.$(os)

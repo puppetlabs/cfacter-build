@@ -9,7 +9,7 @@ compiler: binutils
 
 # ENTRY
 binutils: install-$(binutils_)
-	@echo $@ done
+	@$(echo) $@ done
 
 -include projects/binutils/Makefile.$(os)
 

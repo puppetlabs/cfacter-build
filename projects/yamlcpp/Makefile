@@ -9,6 +9,6 @@ depends: yaml-cpp
 
 # ENTRY
 yaml-cpp: install-$(yamlcpp_)
-	@echo $@ done
+	@$(echo) $@ done
 
 -include projects/yamlcpp/Makefile.$(os)
