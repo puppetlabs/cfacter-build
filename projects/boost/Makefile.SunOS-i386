@@ -5,10 +5,6 @@ fetched/$(boost_).tar.gz:
 
 userconfig='using gcc : $(gcc_ver) : $(gccpath)/bin/$(target)-g++ : <linkflags>"-Wl,-rpath=$(gccpath)/lib" ;'
 
-build/$(arch)/$(boost_)/._.checkout: fetched/$(boost_).tar.gz | build/$(arch)
-	cat fetched/$(boost_).tar.gz | (cd build/$(arch)/ && $(gzip) -dc | $(tar) -xf - )
-	touch $@
-
 build/$(arch)/$(boost_)/tools/build/v2/user-config.jam: build/$(arch)/$(boost_)/._.sync
 	echo $(userconfig) > $@
 
