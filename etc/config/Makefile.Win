@@ -33,7 +33,7 @@ git=$(pshell) .\bin\$(os)\git.ps1
 remove=$(pshell) Remove-Item -recurse -Force -ErrorAction SilentlyContinue
 touch=$(pshell) New-Item -ErrorAction SilentlyContinue -type file 
 cat=$(pshell) Get-Content
-cmake=$(pshell) .\bin\$(os)\cmake.ps1
+cmake=$(pshell) .\bin\$(os)\cmake.ps1 $(prefix)
 cmakecmd=$(cmake)
 # -----------------------------------------------------------------------------
 
