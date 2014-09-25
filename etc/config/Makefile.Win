@@ -1,0 +1,40 @@
+# Platform specific definitions for solaris
+# -----------------------------------------------------------------------------
+#  These are arch dependent definitions for native and cross compilers.
+#  These should be moved to their own files, and included with
+#  `include Makefile.$(arch)` if ever the number of definitions increases
+#  further or any generic makefile rules are added for one of the platforms.
+#  Similarly, add `include Makefile.$(sys_rel)`
+#  and `include Makefile.$(arch).$(sys_rel)` if necessary.
+
+# -----------------------------------------------------------------------------
+installroot=C:\cfacter
+prefix=$(installroot)\$(arch)
+
+# The URL from where we get most of our sources.
+sourceurl=http://enterprise.delivery.puppetlabs.net/sources/Windows
+toolurl=http://pl-build-tools.delivery.puppetlabs.net/Windows
+
+# -----------------------------------------------------------------------------
+# Common tools
+
+pshell=c:\windows\system32\windowspowershell\v1.0\powershell.exe
+cmd=c:\windows\system32\cmd.exe
+choco=$(pshell) .\bin\choco.ps1
+move=$(pshell) move
+renamedir=$(pshell) Rename-Item -path
+cp=$(pshell) Copy-Item -Force -Recurse
+mkdir=$(pshell) mkdir -Force -ErrorAction SilentlyContinue
+gmake=gmake
+rdate=echo
+wget=$(pshell) .\bin\wget.ps1
+7z=$(pshell) .\bin\7z.ps1
+git=$(pshell) .\bin\git.ps1
+remove=$(pshell) Remove-Item -recurse -ErrorAction SilentlyContinue
+touch=$(pshell) New-Item -ErrorAction SilentlyContinue -type file 
+cat=$(pshell) Get-Content
+cmake=$(pshell) .\bin\cmake.ps1
+cmakecmd=$(cmake)
+# -----------------------------------------------------------------------------
+
+

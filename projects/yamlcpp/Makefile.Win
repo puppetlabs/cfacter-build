@@ -1,0 +1,25 @@
+fetched/$(yamlcpp_).tar.gz:
+	$(wget) 'https://yaml-cpp.googlecode.com/files/$(yamlcpp_).tar.gz'
+	$(move) $(yamlcpp_).tar.gz $(@D)
+
+source/$(yamlcpp_)/._.checkout: fetched/$(yamlcpp_).tar.gz | source
+	$(7z) fetched/$(yamlcpp_).tar.gz -osource
+	$(7z) source/$(yamlcpp_).tar -osource >NUL:
+	$(touch) $@
+
+build/$(arch)/$(yamlcpp_)/._.config: $(cmake) install/$(arch)/$(boost_)/._.install source/$(yamlcpp_)/._.checkout
+	$(mkdir) $(@D)
+	$(cmakecmd) $(@D) \
+		-DBOOST_ROOT='"$(prefix)\$(boost_)"' \
+		-DCMAKE_INSTALL_PREFIX='"$(prefix)\$(yamlcpp_)"' \
+		$$pwd\source\$(yamlcpp_)
+	$(touch) $@
+
+build/$(arch)/$(yamlcpp_)/._.make: build/$(arch)/$(yamlcpp_)/._.config
+	(cd $(@D) && $(MAKE) )
+	$(touch) $@
+
+install/$(arch)/$(yamlcpp_)/._.install: build/$(arch)/$(yamlcpp_)/._.make | install/$(arch)/$(yamlcpp_)
+	(cd $(<D) && $(MAKE) install )
+	$(touch) $@
+

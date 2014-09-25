@@ -1,0 +1,27 @@
+# We use the native cmake to build our cross-compiler, which unfortunately
+# means that we have to build the native toolchain as well
+
+compilergz=x86_64-4.8.2-release-win32-seh-rt_v3-rev4.7z
+
+fetched/$(compilergz):
+	$(wget) $(toolurl)/$(compilergz)
+	$(move) $(@F) fetched/
+	@$(echo) $@ done
+
+build/$(arch)/$(gcc_)/._.make: fetched/$(compilergz)
+	$(remove) build/$(arch)/$(gcc_)
+	$(7z) fetched/$(compilergz) -obuild/$(arch)  >NUL:
+	$(move) build/$(arch)/mingw64 build/$(arch)/$(gcc_)
+	$(touch) $@
+
+install/$(arch)/$(gcc_)/._.install: build/$(arch)/$(gcc_)/._.make
+	$(cp) build/$(arch)/$(gcc_) $(prefix)/$(gcc_)
+	$(touch) $@
+
+fetch-toolchain-$(arch): install/$(arch)/$(gcc_)/._.install
+	@$(echo) $@ done
+
+# getcompilers={fetch,make}
+toolchain: $(getcompilers)-toolchain-$(arch)
+	@$(echo) $@ done
+
