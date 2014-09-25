@@ -19,6 +19,7 @@ install/$(arch)/$(gcc_)/._.install: build/$(arch)/$(gcc_)/._.make
 	$(touch) $@
 
 fetch-toolchain-$(arch): install/$(arch)/$(gcc_)/._.install
+	$(setenv) "CCPath" "$(prefix)\$(gcc_)\bin"
 	@$(echo) $@ done
 
 # getcompilers={fetch,make}

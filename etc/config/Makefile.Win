@@ -35,6 +35,7 @@ touch=$(pshell) New-Item -ErrorAction SilentlyContinue -type file
 cat=$(pshell) Get-Content
 cmake=$(pshell) .\bin\$(os)\cmake.ps1 $(prefix)
 cmakecmd=$(cmake)
+setenv=$(pshell) .\bin\$(os)\setenv.ps1
 # -----------------------------------------------------------------------------
 
 
