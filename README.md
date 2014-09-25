@@ -132,6 +132,8 @@ Install `git` and `make`
 choco install git
 choco install make
 ```
+Restart the powershell at this point for git and make to register itself in the path
+
 Get the repository
 ```
 git clone https://github.com/puppetlabs/cfacter-build
