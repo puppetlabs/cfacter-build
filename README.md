@@ -146,5 +146,8 @@ And build
 ```
 make os=Win arch=64 build
 ```
-Before executing, make sure that the cfacter dependencies
-like gcc dlls are in path.
+Installation puts `cfacter.exe` in installroot along with required dlls
+```
+make os=Win arch=64 install
+```
+If you build with `BOOST_PRE=1`, then a prebuilt boost is used instead of building it.
