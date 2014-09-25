@@ -1,0 +1,7 @@
+include etc/toolchain/Makefile.SunOS-i386
+
+make-toolchain-sparc:
+	$(MAKE) toolchain arch=i386
+	$(MAKE) -e install/sparc/$(gcc_)/._.install
+	$(MAKE) cmakeenv arch=sparc
+	@echo $@ done

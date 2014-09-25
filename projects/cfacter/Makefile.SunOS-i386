@@ -1,20 +1,9 @@
-cfacter_ver=0
-cfacter_=cfacter-$(cfacter_ver)
-projects+=$(cfacter_)
-names+=cfacter
-cfacter_clone=http://github.com/puppetlabs/cfacter
-
-$(eval $(call standard_x,$(cfacter_)))
-
 source/$(cfacter_)/._.checkout: | source/$(cfacter_)
 	$(git) clone $(cfacter_clone) $(@D)
 	touch $@
 
 # Horrible hack
 build/i386/$(cfacter_)/._.hack: | build/$(arch)/$(cfacter_) ; touch $@
-build/sparc/$(cfacter_)/._.hack: | build/sparc/$(cfacter_)
-	-ln -s /opt/pl-build-tools/$(arch)/bin/$(target)-ar /opt/pl-build-tools/$(arch)/bin/ar
-	touch $@
 
 build/$(arch)/$(cfacter_)/._.config: source/$(cfacter_)/._.patch $(cmake) build/$(arch)/$(cfacter_)/._.hack
 	(cd $(@D) && $(cmakecmd) \
@@ -23,8 +12,3 @@ build/$(arch)/$(cfacter_)/._.config: source/$(cfacter_)/._.patch $(cmake) build/
 		-DCMAKE_BUILD_TYPE=Debug \
 		$(rootdir)/source/$(cfacter_)) $(t) $@.log
 	touch $@
-
-program: cfacter
-
-cfacter: build/$(arch)/$(cfacter_)/._.make
-	@echo $@ done

@@ -25,77 +25,55 @@
 #	 			< source/%/._.config
 #	 				< source/%/._.make
 #	 					< source/%/._.install
+#
+# IMPORTANT
+# 	If you introduce a new recipe, make sure to only specify the particular
+# 	`actions` that you need to take, and define the action elsewhere. For
+# 	example, to remove a file/folder, define _remove_ and then define remove
+# 	in Makefile.config as rm -rf. This way, you can override them later in
+# 	your platform config file. Remember, you can override variables, but
+# 	overriding full recipes is discouraged (but specialization of pattern
+# 	rules is allowed).
+#
 # =============================================================================
 # Global definitions.
-include etc/Makefile.config
+include etc/config/Makefile
 # -----------------------------------------------------------------------------
 
 # ENTRY
 all:
-	@echo "Basic Usage: For an initial build"
-	@echo "sudo $(MAKE) prepare; $(MAKE) build"
-	@echo
-	@echo "Basic Usage: For a completely clean build"
-	@echo "sudo $(MAKE) uninstall prepare; $(MAKE) build"
-	@echo
-	@echo "Intermediate Usage:"
-	@echo "sudo	$(MAKE) prepare"
-	@echo "	The above command ensures that system paths are created with correct permissions for current user"
-	@echo
-	@echo "$(MAKE) [arch] [getcompilers={make,fetch}] build"
-	@echo	"	This command accomplishes a build including compilers and depends"
-	@echo
-	@echo "$(MAKE) [arch] depends"
-	@echo "	The above command installs dependencies for cfacter"
-	@echo
-	@echo "$(MAKE) [arch] $(cfacter_)"
-	@echo "	The above command compiles cfacter"
-	@echo
-	@echo "$(MAKE) clean"
-	@echo "	Recursively cleans (* Only on full builds *)"
-	@echo "$(MAKE) clobber"
-	@echo "	Removes source/ build/ install/"
-	@echo "sudo	$(MAKE) uninstall"
-	@echo "	Removes the $(installroot)"
-	@echo
-	@echo "Platform specific options:"
+	$(cat) USAGE.md
+	@$(echo) "Platform specific options:"
 	@$(MAKE) all-$(os)
 
 
 # Project specific makefiles
 # Use the generic as a template for new projects
-include projects/Makefile.generic
+include etc/Makefile.generic
 
-# compiler suite
-include projects/Makefile.binutils
-include projects/Makefile.gcc
-include projects/Makefile.cmake
+# Projects
+include etc/build/Makefile.$(os)
 
-# Dependencies
-include projects/Makefile.boost
-include projects/Makefile.yamlcpp
-include projects/Makefile.openssl
-
-# Our toolchain that uses compiler suite
-include etc/Makefile.toolchain
+# toolchain
+include etc/toolchain/Makefile.$(os)
 
 # CFacter tha tuses dependencies
-include projects/Makefile.cfacter
+include projects/cfacter/Makefile
 
 # ENTRY
 # Clean out our builds
 clobber:
-	rm -rf build install source build.log
+	$(remove) build install source build.log
 
 clean: $(addprefix clean-,$(projects))
-	rm -f build.log
-	@echo $@ done
+	$(remove) build.log
+	@$(echo) $@ done
 
 # ENTRY
 # Clean out the installed packages. Unfortunately, we also need to
 # redo the headers 
 uninstall: uninstall-$(os)
-	@echo done.
+	@$(echo) done.
 
 # ENTRY
 # This is to be the only command that requires `sudo` or root.
@@ -105,11 +83,11 @@ prepare: prepare-$(os)
 
 # ENTRY
 get: $(get_)
-	@echo $@ done
+	@$(echo) $@ done
 
 # ENTRY
 checkout: $(checkout_)
-	@echo $@ done
+	@$(echo) $@ done
 
 # To compile native cfacter, we can just build the native cross-compiler
 # toolchain. However, to build the cross compiled sparc cfacter, we need to
@@ -125,7 +103,7 @@ build:
 
 # ENTRY
 depends:
-	@echo $@ done
+	@$(echo) $@ done
 
 $(mydirs): ; $(mkdir) $@
 

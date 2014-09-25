@@ -6,9 +6,9 @@
 rootdir:=$(CURDIR)
 
 ifndef os
-arch?=$(shell uname -p)
-kernel?=$(shell uname -s)
-os=$(kernel)-$(arch)
+arch?=$(shell /usr/bin/uname -p)
+kernel?=$(shell /usr/bin/uname -s)
+os?=$(kernel)-$(arch)
 endif
 # -----------------------------------------------------------------------------
 # Name of the operating system where you are _building_. If the platform does not
@@ -59,6 +59,26 @@ toolchain_=$(addsuffix ._.cmakeenv, source/$(arch)/)
 
 # -----------------------------------------------------------------------------
 #  Common utilities. Override them in platform specific makefiles.
+
+# Remove all
+remove=/bin/rm -rf
+echo=echo
+timeserver=time.nist.gov
+synctime=$(rdate) $(timeserver)
+cat=/bin/cat
+mkdir=/bin/mkdir -p
+wget_=/usr/bin/wget
+wget=$(wget_) -q -c --no-check-certificate
+fetchdir=$(wget) -r -nH --cut-dirs=2 --no-parent --reject "index.html*" --no-check-certificate
+git=/usr/bin/git
+move=/bin/mv
+touch=/bin/touch
+extractgz=/bin/bash -c 'cat $$0 | (cd source/ && $(gzip) -dc | $(tar) -xf - )'
+patchall=/bin/bash -c 'set +o pipefail; cat -s patches/$$0-* | (cd $$1 && $(patch) -p1 )'
+syncdir=/bin/bash -c '(cd $$0 && $(tar) -cf - . ) | (cd $$1 && $(tar) -xf -)'
+tgz=tar.gz
+
+
 ar=/usr/bin/ar
 tar=/usr/bin/tar
 gzip=/usr/bin/gzip
@@ -66,14 +86,8 @@ bzip2=/usr/bin/bzip2
 patch=/usr/bin/patch
 rsync=/usr/bin/rsync
 rdate=/usr/bin/rdate
-mkdir=/bin/mkdir -p
 chmod=/bin/chmod
-wget_opt=-q -c --no-check-certificate
-wget=/usr/bin/wget $(wget_opt) 
-git=/usr/bin/git
 
-timeserver=time.nist.gov
-synctime=$(rdate) $(timeserver)
 
 as=/usr/bin/as
 ld=/usr/bin/ld
@@ -117,4 +131,4 @@ t= && echo
 endif
 
 # Give platform specific definitions a chance to override.
-include etc/Makefile.config.$(os)
+include etc/config/Makefile.$(os)

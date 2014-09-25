@@ -1,0 +1,13 @@
+get: fetched/sparc.sysroot.tar.gz
+
+$(installroot)/%/sysroot: ; mkdir -p $@
+
+# extract the headers
+build/%/._.headers: fetched/%.sysroot.tar.gz | $(installroot)/%/sysroot build/%
+	cat $< | (cd $(installroot)/$*/sysroot && $(gzip) -dc | $(tar) -xf - )
+	touch $@
+
+# The sparc cross compiler requires the sparc system headers already present.
+build/sparc/$(gcc_)/._.config: build/sparc/._.headers
+
+include projects/gcc/Makefile.SunOS-i386

@@ -1,0 +1,7 @@
+include etc/config/Makefile.SunOS-i386
+
+nativepath=$(gccnativepath)/bin:$(PATH)
+nativecc=$(gccnativepath)/bin/$(call mytarget,i386)-gcc
+nativecxx=$(gccnativepath)/bin/$(call mytarget,i386)-g++
+nativeenv=$(if $(filter sparc,$(arch)),PATH=$(nativepath) CC=$(nativecc) CXX=$(nativecxx))
+
