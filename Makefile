@@ -63,13 +63,13 @@ include projects/cfacter/Makefile
 # ENTRY
 # Clean out our builds
 clobber:
-	$(remove) build
-	$(remove) install
-	$(remove) source
-	$(remove) build.log
+	- $(remove) build
+	- $(remove) install
+	- $(remove) source
+	- $(remove) build.log
 
 clean: $(addprefix clean-,$(projects))
-	$(remove) build.log
+	- $(remove) build.log
 	@$(echo) $@ done
 
 # ENTRY
