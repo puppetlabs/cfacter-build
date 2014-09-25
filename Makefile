@@ -104,6 +104,9 @@ build:
 	$(MAKE) -e depends
 	$(MAKE) -e cfacter
 
+install: install-$(os)
+	@$(echo) done
+
 # ENTRY
 depends:
 	@$(echo) $@ done
@@ -114,6 +117,6 @@ $(mydirs): ; $(mkdir) $@
 .PRECIOUS: $(get_) $(checkout_) $(patch_) \
 	         $(config_) $(make_) $(install_)
 
-.PHONY: build
+.PHONY: build install
 
 include etc/Makefile.$(os)

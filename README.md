@@ -121,6 +121,8 @@ and add it to the list of project specific Makefiles, as
 
 Windows
 -------
+We use powershell as the base, so execute the commands on a powershell window.
+
 For windows platforms, start with choco
 ```
 iex ((new-object net.webclient).DownloadString('https://chocolatey.org/install.ps1'))

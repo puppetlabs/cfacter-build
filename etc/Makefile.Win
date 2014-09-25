@@ -8,7 +8,8 @@ prepare-Win:
 	$(choco) install ruby
 
 uninstall-Win: 
-	$(remove) $(installroot)
+	-$(pshell) .\bin\$(os)\unsetenv.ps1 "CCPath"
+	-$(remove) $(installroot)
 
 install-Win:
 	$(mkdir) $(prefix)/bin/
