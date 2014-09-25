@@ -100,7 +100,7 @@ cmakecmd=$(cmake) $(withtoolchain) $(cmakeverbose)
 # exists. (Notice the use of '|' to ensure that our targets do not get rebuilt
 # unnecessarily)
 
-mydirs=source install fetched $(source) $(builds) $(installs) \
+mydirs=source install/$(arch) fetched $(source) $(builds) $(installs) \
 			 build/$(arch)  source/$(arch) \
 			 source/$(arch)/root $(sysdirs) \
 			 source/cfacter build/$(arch)/cfacter
