@@ -20,20 +20,20 @@ toolurl=http://pl-build-tools.delivery.puppetlabs.net/Windows
 
 pshell=c:\windows\system32\windowspowershell\v1.0\powershell.exe
 cmd=c:\windows\system32\cmd.exe
-choco=$(pshell) .\bin\choco.ps1
+choco=$(pshell) .\bin\$(os)\choco.ps1
 move=$(pshell) move
 renamedir=$(pshell) Rename-Item -path
 cp=$(pshell) Copy-Item -Force -Recurse
 mkdir=$(pshell) mkdir -Force -ErrorAction SilentlyContinue
 gmake=gmake
 rdate=echo
-wget=$(pshell) .\bin\wget.ps1
-7z=$(pshell) .\bin\7z.ps1
-git=$(pshell) .\bin\git.ps1
-remove=$(pshell) Remove-Item -recurse -ErrorAction SilentlyContinue
+wget=$(pshell) .\bin\$(os)\wget.ps1
+7z=$(pshell) .\bin\$(os)\7z.ps1
+git=$(pshell) .\bin\$(os)\git.ps1
+remove=$(pshell) Remove-Item -recurse -Force -ErrorAction SilentlyContinue
 touch=$(pshell) New-Item -ErrorAction SilentlyContinue -type file 
 cat=$(pshell) Get-Content
-cmake=$(pshell) .\bin\cmake.ps1
+cmake=$(pshell) .\bin\$(os)\cmake.ps1
 cmakecmd=$(cmake)
 # -----------------------------------------------------------------------------
 
