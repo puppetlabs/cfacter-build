@@ -124,3 +124,29 @@ ifndef X_<MYPROJ>
 endif
 ```
 so that platforms that dont need it can define X_MYPROJ to avoid it.
+
+Windows
+-------
+For windows platforms, start with choco
+```
+iex ((new-object net.webclient).DownloadString('https://chocolatey.org/install.ps1'))
+```
+Install `git` and `make`
+```
+choco install git
+choco install make
+```
+Get the repository
+```
+git clone https://github.com/puppetlabs/cfacter-build
+```
+Prepare
+```
+make os=Win arch=64 prepare
+```
+And build
+```
+make os=Win arch=64 build
+```
+Before executing, make sure that the cfacter dependencies
+like gcc dlls are in path.

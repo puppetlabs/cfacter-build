@@ -1,0 +1,15 @@
+boostfile=boost_1.55.0_mingw-w64_4.8.1.7z
+
+fetched/$(boostfile):
+	$(wget) 'https://s3.amazonaws.com/kylo-pl-bucket/$(boostfile)'
+	$(move) $(boostfile) $(@D)
+
+build/$(arch)/$(boost_)/._.make: fetched/$(boostfile) | build/$(arch)
+	$(remove) build/$(arch)/$(boost_)
+	$(7z) fetched/$(boostfile) -obuild/$(arch) >NUL:
+	$(move) build/$(arch)/boost_1.55.0_mingw-w64_4.8.1 build/$(arch)/$(boost_)
+	$(touch) $@
+
+install/$(arch)/$(boost_)/._.install: build/$(arch)/$(boost_)/._.make
+	$(cp) build/$(arch)/$(boost_) $(prefix)/$(boost_)
+	$(touch) $@
