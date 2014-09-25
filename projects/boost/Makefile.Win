@@ -8,6 +8,9 @@ build/$(arch)/$(boost_)/._.make: fetched/$(boostfile) | build/$(arch)
 	$(7z) fetched/$(boostfile) -obuild/$(arch) >NUL:
 	$(move) build/$(arch)/boost_1.55.0_mingw-w64_4.8.1 build/$(arch)/$(boost_)
 
+install/$(arch)/$(boost_)/._.install: build/$(arch)/$(boost_)/._.make
+	$(cp) build/$(arch)/$(boost_) $(prefix)/$(boost_)
+	$(touch) $@
 else
 
 fetched/$(boost_).7z:
@@ -36,6 +39,8 @@ build/$(arch)/$(boost_)/._.make: build/$(arch)/$(boost_)/._.sync
 		--with-log \
 		--prefix='"$(prefix)\$(boost_)"'
 	$(touch) $@
-endif
+
 install/$(arch)/$(boost_)/._.install: build/$(arch)/$(boost_)/._.make
 	$(touch) $@
+
+endif
