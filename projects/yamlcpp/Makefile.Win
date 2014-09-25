@@ -10,8 +10,8 @@ source/$(yamlcpp_)/._.checkout: fetched/$(yamlcpp_).tar.gz | source
 build/$(arch)/$(yamlcpp_)/._.config: $(cmake) install/$(arch)/$(boost_)/._.install source/$(yamlcpp_)/._.checkout
 	$(mkdir) $(@D)
 	$(cmakecmd) $(@D) \
-		-DBOOST_ROOT='"$(prefix)\$(boost_)"' \
-		-DCMAKE_INSTALL_PREFIX='"$(prefix)\$(yamlcpp_)"' \
+		'-DBOOST_ROOT="$(prefix)\$(boost_)"' \
+		-DCMAKE_INSTALL_PREFIX="$(prefix)\$(yamlcpp_)" \
 		$$pwd\source\$(yamlcpp_)
 	$(touch) $@
 

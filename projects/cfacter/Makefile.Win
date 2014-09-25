@@ -5,9 +5,9 @@ source/$(cfacter_)/._.checkout: | source/$(cfacter_)
 build/$(arch)/$(cfacter_)/._.config: install/$(arch)/$(boost_)/._.install install/$(arch)/$(yamlcpp_)/._.install source/$(cfacter_)/._.checkout
 	$(mkdir) $(@D)
 	$(cmakecmd) $(@D) \
-		-DBOOST_ROOT='"$(prefix)\$(boost_)"' \
-		-DYAMLCPP_ROOT='"$(prefix)\$(yamlcpp_)"' \
-		-DCMAKE_INSTALL_PREFIX='"$(prefix)\$(cfacter_)"' \
+		'-DBOOST_ROOT="$(prefix)\$(boost_)"' \
+		'-DYAMLCPP_ROOT="$(prefix)\$(yamlcpp_)"' \
+		-DCMAKE_INSTALL_PREFIX="$(prefix)\$(cfacter_)" \
 		$$pwd\source\$(cfacter_)
 	$(touch) $@
 
