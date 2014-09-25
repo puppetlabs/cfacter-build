@@ -1,15 +1,41 @@
+ifdef BOOST_PRE
 boostfile=boost_1.55.0_mingw-w64_4.8.1.7z
-
 fetched/$(boostfile):
 	$(wget) 'https://s3.amazonaws.com/kylo-pl-bucket/$(boostfile)'
 	$(move) $(boostfile) $(@D)
-
 build/$(arch)/$(boost_)/._.make: fetched/$(boostfile) | build/$(arch)
 	$(remove) build/$(arch)/$(boost_)
 	$(7z) fetched/$(boostfile) -obuild/$(arch) >NUL:
 	$(move) build/$(arch)/boost_1.55.0_mingw-w64_4.8.1 build/$(arch)/$(boost_)
+
+else
+
+fetched/$(boost_).7z:
+	$(wget) 'http://iweb.dl.sourceforge.net/project/boost/boost/1.55.0/$(boost_).7z'
+	$(move) $(boost_).7z $(@D)
+
+source/$(boost_)/._.checkout: fetched/$(boost_).7z | source
+	$(7z) fetched/$(boost_).7z -osource/ >NUL:
 	$(touch) $@
 
+build/$(arch)/$(boost_)/._.sync: source/$(boost_)/._.checkout
+	$(cp) source/$(boost_) build/$(arch)/$(boost_)
+	@$(touch) $@
+
+build/$(arch)/$(boost_)/._.make: build/$(arch)/$(boost_)/._.sync
+	$(pshell) .\bin\Win\boost.ps1 $(prefix) build/$(arch)/$(boost_) \
+	    'toolset=gcc' \
+		--build-type=minimal \
+		install \
+		--with-program_options \
+		--with-system \
+		--with-filesystem \
+		--with-date_time \
+		--with-thread \
+		--with-regex \
+		--with-log \
+		--prefix='"$(prefix)\$(boost_)"'
+	$(touch) $@
+endif
 install/$(arch)/$(boost_)/._.install: build/$(arch)/$(boost_)/._.make
-	$(cp) build/$(arch)/$(boost_) $(prefix)/$(boost_)
 	$(touch) $@
