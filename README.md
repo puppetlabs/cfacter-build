@@ -98,7 +98,7 @@ named by the standard pattern rule.
 
 cfacter-build chooses the operating system for the build from the value
 of `os`, and `arch` variables. This may be passed in from command line as
-`gmake os=Win arch=64` for those platforms that do not have `uname` or
+`gmake os=XX arch=xx` for those platforms that do not have `uname` or
 equivalent. If not passed in,
 cfacter-build tries to figure out the operating system using `uname`, and
 includes `<Makefile>.$(os)` versions of each makefile. These are included
@@ -140,14 +140,14 @@ git clone https://github.com/puppetlabs/cfacter-build
 ```
 Prepare
 ```
-make os=Win arch=64 prepare
+make prepare
 ```
 And build
 ```
-make os=Win arch=64 build
+make build
 ```
 Installation puts `cfacter.exe` in installroot along with required dlls
 ```
-make os=Win arch=64 install
+make install
 ```
 If you build with `BOOST_PRE=1`, then a prebuilt boost is used instead of building it.

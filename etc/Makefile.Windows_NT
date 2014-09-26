@@ -1,17 +1,17 @@
-all-Win:
+all-Windows_NT:
 	@echo "For Windows:"
 	@echo "[arch] indicates that environmental variable arch={i386} is accepted"
 
-prepare-Win:
+prepare-Windows_NT:
 	$(choco) install cmake
 	$(choco) install 7zip
 	$(choco) install ruby
 
-uninstall-Win: 
+uninstall-Windows_NT:
 	-$(pshell) .\bin\$(os)\unsetenv.ps1 "CCPath"
 	-$(remove) $(installroot)
 
-install-Win:
+install-Windows_NT:
 	$(mkdir) $(prefix)/bin/
 	$(cp) build/$(arch)/$(cfacter_)/bin/cfacter.exe $(prefix)/bin/
 	$(cp) build/$(arch)/$(cfacter_)/bin/*.dll $(prefix)/bin/
