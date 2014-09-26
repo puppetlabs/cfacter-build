@@ -86,10 +86,3 @@ cmakepath=PATH=$(subst $(space),:,$(cmakepath_))
 withtoolchain=-DCMAKE_TOOLCHAIN_FILE=$(prefix)/sol-$(sys_rel)-$(arch)-toolchain.cmake
 cmakecmd=$(cmake) $(withtoolchain) $(cmakeverbose)
 
-# When building sparc packages, we want to build the cross compiler with the
-# native compiler we just built, rather than with the system gcc.
-nativepath=$(gccnativepath)/bin:$(PATH)
-nativecc=$(gccnativepath)/bin/$(call mytarget,i386)-gcc
-nativecxx=$(gccnativepath)/bin/$(call mytarget,i386)-g++
-nativeenv=$(if $(filter sparc,$(arch)),PATH=$(nativepath) CC=$(nativecc) CXX=$(nativecxx))
-
