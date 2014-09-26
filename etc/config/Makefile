@@ -5,13 +5,20 @@
 # Since we dont recurse into subdirs, we can use CURDIR for the root path.
 rootdir:=$(CURDIR)
 
+# Some platforms have OS already defined in the environment, notably those
+# without uname.
+ifdef OS
+os?=$(OS)
+endif
+
 ifndef os
 arch?=$(shell /usr/bin/uname -p)
 kernel?=$(shell /usr/bin/uname -s)
 os?=$(kernel)-$(arch)
-else
-arch?=x
 endif
+
+# For those without uname, provide a default arch.
+arch?=x
 # -----------------------------------------------------------------------------
 # Name of the operating system where you are _building_. If the platform does not
 # have uname, then pass in the operating system name directly

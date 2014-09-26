@@ -26,7 +26,7 @@ build/$(arch)/$(boost_)/._.sync: source/$(boost_)/._.checkout
 	@$(touch) $@
 
 build/$(arch)/$(boost_)/._.make: build/$(arch)/$(boost_)/._.sync
-	$(pshell) .\bin\Win\boost.ps1 $(prefix) build/$(arch)/$(boost_) \
+	$(pshell) .\bin\Windows_NT\boost.ps1 $(prefix) build/$(arch)/$(boost_) \
 	    'toolset=gcc' \
 		--build-type=minimal \
 		install \

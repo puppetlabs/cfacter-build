@@ -12,8 +12,8 @@ installroot=C:\cfacter
 prefix=$(installroot)\$(arch)
 
 # The URL from where we get most of our sources.
-sourceurl=http://enterprise.delivery.puppetlabs.net/sources/Windows
-toolurl=http://pl-build-tools.delivery.puppetlabs.net/Windows
+sourceurl=http://enterprise.delivery.puppetlabs.net/sources/$(os)
+toolurl=http://pl-build-tools.delivery.puppetlabs.net/$(os)
 
 # -----------------------------------------------------------------------------
 # Common tools
