@@ -27,7 +27,7 @@ fetch-toolchain-$(arch): $(cmake) | $(prefix)/bin
 	@echo $@ done
 
 make-toolchain-i386:
-	$(MAKE) -e install/i386/$(gcc_)/._.install
+	$(MAKE) -e install-$(gcc_)
 	$(MAKE) cmakeenv arch=i386
 	@echo $@ done
 
