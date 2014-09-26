@@ -9,6 +9,8 @@ ifndef os
 arch?=$(shell /usr/bin/uname -p)
 kernel?=$(shell /usr/bin/uname -s)
 os?=$(kernel)-$(arch)
+else
+arch?=x
 endif
 # -----------------------------------------------------------------------------
 # Name of the operating system where you are _building_. If the platform does not
