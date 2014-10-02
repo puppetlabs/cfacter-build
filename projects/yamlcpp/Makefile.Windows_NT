@@ -11,7 +11,7 @@ build/$(arch)/$(yamlcpp_)/._.config: $(cmake) install/$(arch)/$(boost_)/._.insta
 	$(mkdir) $(@D)
 	$(cmakecmd) $(@D) \
 		'-DBOOST_ROOT="$(prefix)\$(boost_)"' \
-		-DCMAKE_INSTALL_PREFIX="$(prefix)\$(yamlcpp_)" \
+		'-DCMAKE_INSTALL_PREFIX="$(prefix)\$(yamlcpp_)"' \
 		$$pwd\source\$(yamlcpp_)
 	$(touch) $@
 
