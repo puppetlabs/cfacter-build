@@ -16,18 +16,20 @@ build/$(arch)/$(openssl_)/._.config: build/$(arch)/$(openssl_)/._.sync source/$(
 				shared \
 				$(openssl_target) \
 				zlib-dynamic \
-				enable-camellia \
-				enable-seed \
 				enable-tlsext \
 				enable-rfc3779 \
 				enable-cms \
-				enable-md2 \
-				no-mdc2 \
-				no-rc5 \
-				no-ec2m \
-				no-gost \
-				no-srp \
-				no-ssl2 \
+				disable-seed \
+				disable-idea \
+				disable-des \
+				disable-mdc2 \
+				disable-ec2m \
+				disable-gost \
+				disable-srp \
+				disable-ssl2 \
+				disable-rc2 \
+				disable-rc4 \
+				disable-psk \
 	) $(t) $@.log
 	touch $@
 
