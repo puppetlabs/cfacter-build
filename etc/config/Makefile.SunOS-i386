@@ -87,3 +87,5 @@ withtoolchain=-DCMAKE_TOOLCHAIN_FILE=$(prefix)/sol-$(sys_rel)-$(arch)-toolchain.
 cmakecmd=$(cmake) $(withtoolchain) $(cmakeverbose)
 patchall=/bin/bash -c 'set +o pipefail; cat -s patches/$$0-* patches/$(os)/$$0-* | (cd $$1 && $(patch) -p1 )'
 
+export SHELL=$(bash) -e -o pipefail
+

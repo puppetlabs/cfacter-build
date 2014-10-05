@@ -130,10 +130,6 @@ export PATH=$(subst $(space),:,$(path))
 withtoolchain=-DCMAKE_TOOLCHAIN_FILE=$(prefix)/$(os)-toolchain.cmake
 cmakeverbose=-DCMAKE_VERBOSE_MAKEFILE=ON
 
-# Make bash sane.
-# And dont use /bin/sh if you can help it.
-export SHELL=$(bash) -e -o pipefail
-
 # redirect config make & make install output to a build.log
 # Use this if you dislike redirecting to logs
 t=2>&1 | tee -a build.log >
