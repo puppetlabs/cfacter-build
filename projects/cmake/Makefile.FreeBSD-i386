@@ -1,0 +1,18 @@
+build/$(arch)/$(cmake_)/._.config: install/$(arch)/$(gcc_)/._.install
+
+build/i386/$(cmake_)/._.config: source/$(cmake_)/._.patch
+	(cd $(@D) && env \
+		CC=$(prefix)/bin/gcc \
+		CXX=$(prefix)/bin/g++ \
+		CFLAGS="-I$(prefix)/include" \
+		LD_LIBRARY_PATH="$(prefix)/lib" \
+		LDFLAGS="-L$(prefix)/lib -R$(prefix)/lib" \
+		$(rootdir)/source/$(cmake_)/bootstrap \
+			--prefix=$(prefix) \
+			--datadir=/share/cmake \
+			--docdir=/share/doc/$(cmake_) \
+			--mandir=/share/man \
+			--verbose \
+	) $(t) $@.log
+	touch $@
+

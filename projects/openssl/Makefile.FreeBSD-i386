@@ -1,0 +1,46 @@
+fetched/$(openssl_).tar.gz:
+	$(wget) 'https://www.openssl.org/source/$(openssl_).tar.gz'
+	mv $(openssl_).tar.gz $(@D)
+
+openssl_target=gcc
+
+build/$(arch)/$(openssl_)/._.config: build/$(arch)/$(openssl_)/._.sync source/$(openssl_)/._.patch
+	(cd $(@D) && env \
+				LDFLAGS="-L $(prefix)/lib" \
+				CC=$(prefix)/bin/gcc \
+				$(cmakepath) \
+			./Configure \
+				--prefix=$(prefix) \
+				--openssldir=$(prefix)/ssl \
+				--libdir=$(target)/lib \
+				shared \
+				$(openssl_target) \
+				zlib-dynamic \
+				enable-camellia \
+				enable-seed \
+				enable-tlsext \
+				enable-rfc3779 \
+				enable-cms \
+				enable-md2 \
+				no-mdc2 \
+				no-rc5 \
+				no-ec2m \
+				no-gost \
+				no-srp \
+				no-ssl2 \
+	) $(t) $@.log
+	touch $@
+
+
+build/$(arch)/$(openssl_)/._.makedepend: build/$(arch)/$(openssl_)/._.config
+	- cp -f $(@D)/crypto/md2/md2.h $(@D)/include/openssl/
+	(cd $(@D) && $(MAKE) SHELL=$(bash) depend ) $(t) $@.log
+	touch $@
+
+build/$(arch)/$(openssl_)/._.make: build/$(arch)/$(openssl_)/._.makedepend
+	(cd $(@D) && $(MAKE) SHELL=$(bash) ) $(t) $@.log
+	touch $@
+
+install/$(arch)/$(openssl_)/._.install: build/$(arch)/$(openssl_)/._.make
+	(cd $(<D) && $(MAKE) SHELL=$(bash) install &&  ln -sf $(prefix)/$(target)/lib/libcrypto.a $(prefix)/lib/libcrypto.a ) $(t) $@.log
+	touch $@

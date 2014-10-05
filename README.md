@@ -151,3 +151,42 @@ Installation puts `cfacter.exe` in installroot along with required dlls
 make install
 ```
 If you build with `BOOST_PRE=1`, then a prebuilt boost is used instead of building it.
+
+FreeBSD
+-------
+For the freebsd release 10.0, the package update URL is incorrect. Open the file
+`/etc/pkg/FreeBSD.conf` and change `url: "pkg+http://pkg.FreeBSD.org/${ABI}/latest"` to
+`url: "pkg+http://pkg.FreeBSD.org/${ABI}/release/0/"` Then run the following commands
+```
+pkg update
+pkg install git
+pkg install gmake
+
+```
+Get the repository
+```
+git clone https://github.com/puppetlabs/cfacter-build
+```
+Prepare for installation
+```
+sudo gmake prepare
+```
+Build cfacter and dependencies. If you would like the toolchain also to be
+built, then use
+```
+gmake build getcompilers=make
+```
+Remember to `gmake update-toolchain` once you are done. This archives the
+toolchain under 'fetched/' for future compilation.
+
+If you would like to reuse the toolchain already uploaded, or in your 'fetched/' directory, then
+the default build target is sufficient
+```
+gmake build
+```
+
+Install cfacter on $installroot
+```
+gmake install
+```
+

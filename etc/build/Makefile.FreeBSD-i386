@@ -1,0 +1,9 @@
+# compiler suite
+include projects/gcc/Makefile
+include projects/cmake/Makefile
+
+# Dependencies
+include projects/boost/Makefile
+include projects/yamlcpp/Makefile
+include projects/openssl/Makefile
+

@@ -1,0 +1,29 @@
+# We use the native cmake to build our cross-compiler, which unfortunately
+# means that we have to build the native toolchain as well
+
+$(cmake): | $(prefix)/bin
+	@echo $@ done
+
+compilergz=$(os)-compiler.tar.gz
+
+update-toolchain:
+	(cd /usr/local/ && $(tar) -cf - $(installlabel)/$(arch) ) | $(gzip) -c > fetched/$(compilergz)
+
+fetched/$(os)-compiler.tar.gz:
+	$(wget) $(toolurl)/$(@F)
+	mv $(@F) fetched/
+	@echo $@ done
+
+$(prefix)/bin: | fetched/$(os)-compiler.tar.gz
+	cat $| | (cd /usr/local/ && $(gzip) -dc | $(tar) -xf - )
+
+fetch-toolchain-$(os): | $(prefix)/bin
+	@echo $@ done
+
+make-toolchain-$(os):
+	$(MAKE) -e install-$(gcc_)
+	$(MAKE) -e install-$(cmake_)
+	@echo $@ done
+
+toolchain: $(getcompilers)-toolchain-$(os)
+	@echo $@ done

@@ -1,0 +1,48 @@
+# Platform specific definitions for FreeBSD
+
+target=i386-pc
+# -----------------------------------------------------------------------------
+installroot=/usr/local/$(installlabel)
+prefix=$(installroot)/$(arch)
+
+# The URL from where we get most of our sources.
+sourceurl=http://enterprise.delivery.puppetlabs.net/sources/FreeBSD
+toolurl=https://pl-build-tools.delivery.puppetlabs.net/FreeBSD
+
+
+# -----------------------------------------------------------------------------
+
+sys_rel:=$(shell uname -r)
+
+# -----------------------------------------------------------------------------
+# Common tools
+tar=/usr/local/bin/gtar
+touch=/usr/bin/touch
+gzip=/usr/bin/gzip
+gmake=/usr/local/bin/gmake
+bzip2=/usr/bin/bzip2
+patch=/usr/bin/patch
+rsync=/bin/rsync
+rdate=/usr/local/sbin/rdate
+git=/usr/local/bin/git
+bash=/usr/local/bin/bash
+wget_=/usr/local/bin/wget
+
+as=$(prefix)/$(target)/bin/as
+ld=$(prefix)/$(target)/bin/ld
+cmake=$(installroot)/i386/bin/cmake
+
+# -----------------------------------------------------------------------------
+path= $(prefix)/bin \
+     $(installroot)/bin \
+     /usr/bin \
+     /bin \
+     /sbin \
+     /usr/sbin \
+     /usr/local/sbin \
+     /usr/local/bin
+
+
+cmakecmd=$(cmake) $(cmakeverbose)
+export SHELL=$(bash) -e -o pipefail
+
