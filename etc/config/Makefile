@@ -82,9 +82,11 @@ fetchdir=$(wget) -r -nH --cut-dirs=2 --no-parent --reject "index.html*" --no-che
 git=/usr/bin/git
 move=/bin/mv
 touch=/bin/touch
-extractgz=/bin/bash -c 'cat $$0 | (cd source/ && $(gzip) -dc | $(tar) -xf - )'
-patchall=/bin/bash -c 'set +o pipefail; cat -s patches/$$0-* | (cd $$1 && $(patch) -p1 )'
-syncdir=/bin/bash -c '(cd $$0 && $(tar) -cf - . ) | (cd $$1 && $(tar) -xf -)'
+bash=/bin/bash
+find=/usr/bin/find
+extractgz=$(bash) -c 'cat $$0 | (cd source/ && $(gzip) -dc | $(tar) -xf - )'
+patchall=$(bash) -c '( echo | cat $$($(find) ./patches/ \( -name $$0\* -depth 1 -or -path \*/$(os)/\* -name $$0\* \) -print) ) | (cd $$1 && $(patch) -p1 ; true )'
+syncdir=$(bash) -c '(cd $$0 && $(tar) -cf - . ) | (cd $$1 && $(tar) -xf -)'
 tgz=tar.gz
 
 
@@ -130,7 +132,7 @@ cmakeverbose=-DCMAKE_VERBOSE_MAKEFILE=ON
 
 # Make bash sane.
 # And dont use /bin/sh if you can help it.
-export SHELL=/bin/bash -e -o pipefail
+export SHELL=$(bash) -e -o pipefail
 
 # redirect config make & make install output to a build.log
 # Use this if you dislike redirecting to logs
