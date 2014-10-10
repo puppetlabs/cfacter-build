@@ -8,6 +8,7 @@ build/$(arch)/$(cfacter_)/._.config: install/$(arch)/$(boost_)/._.install instal
 		'-DBOOST_ROOT="$(prefix)\$(boost_)"' \
 		'-DYAMLCPP_ROOT="$(prefix)\$(yamlcpp_)"' \
 		-DCMAKE_INSTALL_PREFIX="$(prefix)\$(cfacter_)" \
+		-DBOOST_STATIC=ON \
 		$$pwd\source\$(cfacter_)
 	$(touch) $@
 
