@@ -33,6 +33,7 @@ build/$(arch)/$(openssl_)/._.config: build/$(arch)/$(openssl_)/._.sync source/$(
 
 
 build/$(arch)/$(openssl_)/._.makedepend: build/$(arch)/$(openssl_)/._.config
+	- cp -f $(@D)/crypto/md2/md2.h $(@D)/include/openssl/
 	(cd $(@D) && $(MAKE) SHELL=/bin/bash depend ) $(t) $@.log
 	touch $@
 
