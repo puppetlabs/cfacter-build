@@ -1,0 +1,36 @@
+
+fetched/$(boost_).tar.gz:
+	$(wget) 'http://iweb.dl.sourceforge.net/project/boost/boost/1.55.0/$(boost_).tar.gz'
+	mv $(boost_).tar.gz $(@D)
+
+userconfig='using gcc : $(gcc_ver) : $(prefix)/bin/g++ ;'
+
+build/$(arch)/$(boost_)/tools/build/v2/user-config.jam: build/$(arch)/$(boost_)/._.sync
+	echo $(userconfig) > $@
+
+build/$(arch)/$(boost_)/._.config: build/$(arch)/$(boost_)/._.sync build/$(arch)/$(boost_)/tools/build/v2/user-config.jam
+	(cd $(@D) && env CC=$(prefix)/bin/gcc \
+			 CXX=$(prefix)/bin/g++ \
+			 ./bootstrap.sh --prefix=$(prefix) \
+			 --with-toolset=gcc toolset=$(gcc_) \
+	) $(t) $@.log       
+	touch $@
+
+build/$(arch)/$(boost_)/._.make: build/$(arch)/$(boost_)/._.config
+	touch $@
+
+install/$(arch)/$(boost_)/._.install: build/$(arch)/$(boost_)/._.make
+	(cd build/$(arch)/$(boost_)/ && env CC=$(prefix)/bin/gcc CXX=$(prefix)/bin/g++ \
+	 ./b2 --toolset=gcc toolset=$(gcc_) --debug-configuration \
+		--build-dir=build/$(arch)/$(boost_) \
+		--prefix=$(prefix) \
+		--with-filesystem \
+		--with-log \
+		--with-program_options \
+		--with-regex \
+		--with-system \
+		--with-thread \
+		--disable-icu \
+		install \
+	) $(t) $@.log
+	touch $@

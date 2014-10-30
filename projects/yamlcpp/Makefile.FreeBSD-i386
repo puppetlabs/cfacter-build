@@ -1,0 +1,19 @@
+export YAMLCPP_ROOT=$(installroot)
+
+fetched/$(yamlcpp_).tar.gz:
+	$(wget) 'https://yaml-cpp.googlecode.com/files/$(yamlcpp_).tar.gz'
+	mv $(yamlcpp_).tar.gz $(@D)
+
+build/$(arch)/$(yamlcpp_)/._.config: source/$(yamlcpp_)/._.patch $(cmake) install/$(arch)/$(boost_)/._.install
+	(cd $(@D) && $(cmakecmd) \
+		-DCMAKE_INSTALL_PREFIX:PATH=$(prefix) \
+                -DBOOST_ROOT=$(prefix)/$(boost_) \
+                -DCMAKE_C_COMPILER=$(prefix)/bin/gcc -DCMAKE_CXX_COMPILER=$(prefix)/bin/g++ \
+                -DCMAKE_INSTALL_PREFIX=$(prefix) \
+                -DCMAKE_CXX_FLAGS="-I$(prefix)/include -L$(prefix)/lib" \
+                -DCMAKE_CXX_LINKER_FLAGS="-L$(prefix)/lib" \
+                -DCMAKE_BUILD_TYPE=Debug \
+		-DBUILD_SHARED_LIBS=ON \
+		-DYAML_CPP_BUILD_TOOLS=0 $(rootdir)/source/$(yamlcpp_) \
+	) $(t) $@.log
+	touch $@

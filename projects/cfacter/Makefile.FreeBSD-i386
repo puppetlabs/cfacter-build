@@ -1,0 +1,20 @@
+source/$(cfacter_)/._.checkout: | source/$(cfacter_)
+	$(git) clone $(cfacter_clone) $(@D)
+	touch $@
+
+# Horrible hack
+build/i386/$(cfacter_)/._.hack: | build/$(arch)/$(cfacter_) ; touch $@
+
+build/$(arch)/$(cfacter_)/._.config: source/$(cfacter_)/._.patch $(cmake) build/$(arch)/$(cfacter_)/._.hack
+	(cd $(@D) && env PATH=$(prefix)/bin:$(PATH) $(cmakecmd) \
+		-DCXX_FLAGS=_GLIBCXX_USE_C99 \
+                -DBOOST_ROOT=$(prefix)/$(boost_) \
+                -DYAMLCPP_ROOT=$(prefix)/$(yamlcpp_) \
+		-DCMAKE_C_COMPILER=$(prefix)/bin/gcc -DCMAKE_CXX_COMPILER=$(prefix)/bin/g++ \
+		-DOPENSSL_ROOT=$(prefix)/ssl -DOPENSSL_LIBRARY=$(prefix)/lib/libcrypto.a \
+		-DCMAKE_INSTALL_PREFIX=$(prefix) \
+		-DCMAKE_CXX_FLAGS="-I$(prefix)/include -L$(prefix)/lib" \
+		-DCMAKE_CXX_LINKER_FLAGS="-L$(prefix)/lib" \
+		-DCMAKE_BUILD_TYPE=Debug \
+		$(rootdir)/source/$(cfacter_)) $(t) $@.log
+	touch $@

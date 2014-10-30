@@ -1,0 +1,21 @@
+all-FreeBSD-%:
+	@echo "For FreeBSD:"
+	@echo "[arch] indicates that environmental variable arch={i386} is accepted"
+	@echo "$(MAKE) gentoolchain"
+	@echo "	For updating compilers (for later builds - needs i386 compilers installed)"
+	@echo "$(MAKE) toolchain [arch={i386}] getcompilers=fetch"
+	@echo "	For using a prebuilt compiler:"
+
+prepare-FreeBSD-%:
+	pkg update
+	pkg install bash wget gtar rdate lang/gcc48
+	$(mkdir) $(installroot)
+	$(chmod) 777 $(installroot)
+	@echo done.
+
+install-FreeBSD-%: install-$(cfacter_)
+	@echo done.
+
+uninstall-FreeBSD-%: 
+	rm -rf $(installroot)
+

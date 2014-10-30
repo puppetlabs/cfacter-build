@@ -1,0 +1,49 @@
+diff --git a/lib/inc/facter/util/string.hpp b/lib/inc/facter/util/string.hpp
+index 40e637f..a2407b6 100644
+--- a/lib/inc/facter/util/string.hpp
++++ b/lib/inc/facter/util/string.hpp
+@@ -44,4 +44,6 @@ namespace facter { namespace util {
+      */
+     std::string percentage(uint64_t used, uint64_t total);
+ 
++    std::string to_string(uint64_t value);
++
+ }}  // namespace facter::util
+diff --git a/lib/src/facts/posix/processor_resolver.cc b/lib/src/facts/posix/processor_resolver.cc
+index 8d92055..b01deac 100644
+--- a/lib/src/facts/posix/processor_resolver.cc
++++ b/lib/src/facts/posix/processor_resolver.cc
+@@ -1,6 +1,7 @@
+ #include <facter/facts/posix/processor_resolver.hpp>
+ #include <facter/facts/collection.hpp>
+ #include <facter/facts/fact.hpp>
++#include <facter/util/string.hpp>
+ #include <facter/facts/scalar_value.hpp>
+ #include <facter/facts/map_value.hpp>
+ #include <facter/facts/array_value.hpp>
+@@ -10,6 +11,7 @@
+ 
+ using namespace std;
+ using namespace facter::facts;
++using namespace facter::util;
+ using namespace facter::execution;
+ 
+ LOG_DECLARE_NAMESPACE("facts.posix.processor");
+diff --git a/lib/src/util/string.cc b/lib/src/util/string.cc
+index 8926029..51b57ee 100644
+--- a/lib/src/util/string.cc
++++ b/lib/src/util/string.cc
+@@ -39,6 +39,13 @@ namespace facter { namespace util {
+         }
+     }
+ 
++    std::string to_string(uint64_t value)
++    {
++        std::stringstream repr;
++        repr << value;
++        return repr.str();
++    }
++
+     string si_string(uint64_t size)
+     {
+         static char prefixes[] = { 'K', 'M', 'G', 'T', 'P', 'E' };

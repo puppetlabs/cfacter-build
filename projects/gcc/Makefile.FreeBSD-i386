@@ -1,0 +1,33 @@
+source/$(gcc_)/._.prereq:  source/$(gcc_)/._.patch
+	(cd $(@D) && ./contrib/download_prerequisites ) $(t) $@.log
+	touch $@
+
+# --with-gmp=$(rootdir)/build/i386/gcc-4.8.2/gmp/  --with-mpc=$(rootdir)/build/i386/gcc-4.8.2/mpc  --with-mpfr=$(rootdir)/build/i386/gcc-4.8.2/mpfr \
+# LDFLAGS="-L$(rootdir)/build/i386/gcc-4.8.2/gmp/" CFLAGS="-I$(rootdir)/build/i386/gcc-4.8.2/gmp/"
+
+build/$(arch)/$(gcc_)/._.config: source/$(gcc_)/._.prereq
+	mkdir -p $(@D)/gmp;
+	(cd $(@D)/gmp && env $(rootdir)/source/$(gcc_)/gmp/configure \
+		--disable-shared --enable-static --prefix=$(prefix) && $(MAKE) && $(MAKE) install \
+	) $(t) $@.log
+	mkdir -p $(@D)/mpfr;
+	(cd $(@D)/mpfr && env $(rootdir)/source/$(gcc_)/mpfr/configure \
+		--disable-shared --enable-static --with-gmp=$(prefix) --prefix=$(prefix) && $(MAKE) && $(MAKE) install \
+	) $(t) $@.log
+	mkdir -p $(@D)/mpc;
+	(cd $(@D)/mpc && env $(rootdir)/source/$(gcc_)/mpc/configure \
+		--disable-shared --enable-static --with-gmp=$(prefix) --with-mpfr=$(prefix) --prefix=$(prefix) && $(MAKE) && $(MAKE) install \
+	) $(t) $@.log
+	(cd $(@D) && env $(rootdir)/source/$(gcc_)/configure \
+			--prefix=$(prefix) \
+			--with-gnu-as --with-gnu-ld --enable-gold --enable-ld \
+			--with-gmp=$(prefix) \
+			--with-mpfr=$(prefix) \
+			--with-mpc=$(prefix) \
+			--disable-nls \
+			--enable-languages=c,c++ \
+			--disable-libgcj \
+			--disable-multilib \
+			-v \
+	) $(t) $@.log
+	touch $@
