@@ -1,5 +1,5 @@
 source/$(cfacter_)/._.checkout: | source/$(cfacter_)
-	$(git) clone $(cfacter_clone) $(@D)
+	$(git) clone --recursive $(cfacter_clone) $(@D)
 	touch $@
 
 # Horrible hack

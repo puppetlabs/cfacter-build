@@ -1,5 +1,5 @@
 source/$(cfacter_)/._.checkout: | source/$(cfacter_)
-	$(git) clone $(cfacter_clone) $(@D)
+	$(git) clone --recursive $(cfacter_clone) $(@D)
 	$(touch) $@
 
 build/$(arch)/$(cfacter_)/._.config: install/$(arch)/$(boost_)/._.install install/$(arch)/$(yamlcpp_)/._.install source/$(cfacter_)/._.checkout
