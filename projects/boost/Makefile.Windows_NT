@@ -37,6 +37,7 @@ build/$(arch)/$(boost_)/._.make: build/$(arch)/$(boost_)/._.sync
 		--with-thread \
 		--with-regex \
 		--with-log \
+		--with-locale \
 		--prefix='"$(prefix)\$(boost_)"'
 	$(touch) $@
 

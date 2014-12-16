@@ -28,6 +28,7 @@ install/$(arch)/$(boost_)/._.install: build/$(arch)/$(boost_)/._.make
 		--with-regex \
 		--with-system \
 		--with-thread \
+		--with-locale \
 		--disable-icu \
 		install \
 	) $(t) $@.log
