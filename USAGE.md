@@ -12,10 +12,10 @@ sudo	<make> prepare
 	This command accomplishes a build including compilers and depends
 
 <make> [arch] depends
-	The above command installs dependencies for cfacter
+	The above command installs dependencies for facter
 
-<make> [arch] cfacter-<version>
-	The above command compiles cfacter
+<make> [arch] facter-<version>
+	The above command compiles facter
 
 <make> clean
 	Recursively cleans (* Only on full builds *)

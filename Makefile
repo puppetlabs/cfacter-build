@@ -1,7 +1,7 @@
 # =============================================================================
-# This makefile is setup to build cfacter first building the
+# This makefile is setup to build facter first building the
 # cross-compiler suite (binutils, cross-compilers, cmake) followed by
-# cfacter dependencies (boost, yaml, openssl)
+# facter dependencies (boost, yaml, openssl)
 # Threaded dependendencies are setup loosely following the opensolaris package
 # maintainer best practices. Our directory structure is as follows
 #
@@ -57,8 +57,8 @@ include etc/build/Makefile.$(os)
 # toolchain
 include etc/toolchain/Makefile.$(os)
 
-# CFacter tha tuses dependencies
-include projects/cfacter/Makefile
+# Facter that uses dependencies
+include projects/facter/Makefile
 
 # ENTRY
 # Clean out our builds
@@ -92,17 +92,17 @@ get: $(get_)
 checkout: $(checkout_)
 	@$(echo) $@ done
 
-# To compile native cfacter, we can just build the native cross-compiler
-# toolchain. However, to build the cross compiled sparc cfacter, we need to
+# To compile native facter, we can just build the native cross-compiler
+# toolchain. However, to build the cross compiled sparc facter, we need to
 # build the native toolchain first, getting us the native cmake, and build the
 # cross compiled toolchain, and finally use both together to produce our
-# cross-compiled cfacter
+# cross-compiled facter
 
 # ENTRY
 build:
 	$(MAKE) -e toolchain
 	$(MAKE) -e depends
-	$(MAKE) -e cfacter
+	$(MAKE) -e facter
 
 install: install-$(os)
 	@$(echo) done

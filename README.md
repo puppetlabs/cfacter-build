@@ -40,12 +40,12 @@ gmake build
 gmake build arch=sparc
 ```
 
-The cfacter gets built in `./build/<arch>/cfacter-<ver>`
+Facter gets built in `./build/<arch>/facter-<ver>`
 
-If you are developing cfacter, then it may be better to
-fetch from your own repository, in which case, use the variable cfacter_clone like so
+If you are developing facter, then it may be better to
+fetch from your own repository, in which case, use the variable facter_clone like so
 ```
-gmake build cfacter_clone=git@github.com:puppetlabs/cfacter.git
+gmake build facter_clone=git@github.com:puppetlabs/facter.git
 ```
 
 ## Intermediate
@@ -78,8 +78,8 @@ accordingly. We have examples of both `autoconf` and `cmake` builds.
 
 Notice that there are two targets: `compiler` and `depends`.
 The compiler target is used to add a new dependency to the compiler while
-depends is used to add dependency to the cfacter itself. So if you want
-to add a project as cfacter dependency, use `depends: <myproject>` in your
+depends is used to add dependency to the facter itself. So if you want
+to add a project as facter dependency, use `depends: <myproject>` in your
 make file.
 
 Be sure to read the `etc/Makefile.generic`. It contains the default
@@ -146,7 +146,7 @@ And build
 ```
 make build
 ```
-Installation puts `cfacter.exe` in installroot along with required dlls
+Installation puts `facter.exe` in installroot along with required dlls
 ```
 make install
 ```
