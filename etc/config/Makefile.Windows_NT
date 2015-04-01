@@ -8,7 +8,7 @@
 #  and `include Makefile.$(arch).$(sys_rel)` if necessary.
 
 # -----------------------------------------------------------------------------
-installroot=C:\cfacter
+installroot=C:\facter
 prefix=$(installroot)\$(arch)
 
 # The URL from where we get most of our sources.

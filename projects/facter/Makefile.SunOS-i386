@@ -1,0 +1,14 @@
+source/$(facter_)/._.checkout: | source/$(facter_)
+	$(git) clone --recursive $(facter_clone) $(@D)
+	touch $@
+
+# Horrible hack
+build/i386/$(facter_)/._.hack: | build/$(arch)/$(facter_) ; touch $@
+
+build/$(arch)/$(facter_)/._.config: source/$(facter_)/._.patch $(cmake) build/$(arch)/$(facter_)/._.hack
+	(cd $(@D) && $(cmakecmd) \
+		-DOPENSSL_ROOT=$(prefix)/ssl -DOPENSSL_LIBRARY=$(prefix)/$(target)/lib/libcrypto.so \
+		-DCMAKE_INSTALL_PREFIX=$(prefix) \
+		-DCMAKE_BUILD_TYPE=Debug \
+		$(rootdir)/source/$(facter_)) $(t) $@.log
+	touch $@

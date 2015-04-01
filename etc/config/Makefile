@@ -114,7 +114,7 @@ cmakecmd=$(cmake) $(withtoolchain) $(cmakeverbose)
 mydirs=source install/$(arch) fetched $(source) $(builds) $(installs) \
 			 build/$(arch)  source/$(arch) \
 			 source/$(arch)/root $(sysdirs) \
-			 source/cfacter build/$(arch)/cfacter
+			 source/facter build/$(arch)/facter
 # -----------------------------------------------------------------------------
 # some trickery to use array path elements
 e:=

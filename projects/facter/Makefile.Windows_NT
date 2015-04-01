@@ -1,0 +1,22 @@
+source/$(facter_)/._.checkout: | source/$(facter_)
+	$(git) clone --recursive $(facter_clone) $(@D)
+	$(touch) $@
+
+build/$(arch)/$(facter_)/._.config: install/$(arch)/$(boost_)/._.install install/$(arch)/$(yamlcpp_)/._.install source/$(facter_)/._.checkout
+	$(mkdir) $(@D)
+	$(cmakecmd) $(@D) \
+		'-DBOOST_ROOT="$(prefix)\$(boost_)"' \
+		'-DYAMLCPP_ROOT="$(prefix)\$(yamlcpp_)"' \
+		-DCMAKE_INSTALL_PREFIX="$(prefix)\$(facter_)" \
+		-DBOOST_STATIC=ON \
+		$$pwd\source\$(facter_)
+	$(touch) $@
+
+build/$(arch)/$(facter_)/._.make: build/$(arch)/$(facter_)/._.config
+	(cd $(@D) && $(MAKE) )
+	$(touch) $@
+
+install/$(arch)/$(facter_)/._.install: build/$(arch)/$(facter_)/._.make | install/$(arch)/$(facter_)
+	(cd $(<D) && $(MAKE) install )
+	$(touch) $@`
+

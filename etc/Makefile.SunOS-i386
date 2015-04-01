@@ -20,7 +20,7 @@ prepare-SunOS-%: prepare-SunOS-%-$(sys_rel)
 	$(chmod) 777 $(installroot)
 	@echo done.
 
-install-SunOS-%: install-$(cfacter_)
+install-SunOS-%: install-$(facter_)
 	@echo done.
 
 uninstall-SunOS-%: 
