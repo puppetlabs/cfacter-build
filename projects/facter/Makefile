@@ -2,7 +2,7 @@ facter_ver=0
 facter_=facter-$(facter_ver)
 projects+=$(facter_)
 names+=facter
-facter_clone=http://github.com/puppetlabs/facter
+facter_clone=https://github.com/puppetlabs/facter
 
 $(eval $(call standard_x,$(facter_)))
 
