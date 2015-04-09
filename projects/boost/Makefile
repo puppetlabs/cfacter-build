@@ -1,4 +1,4 @@
-boost_ver=1_55_0
+boost_ver=1_57_0
 boost_=boost_$(boost_ver)
 projects+=$(boost_)
 names+=boost
