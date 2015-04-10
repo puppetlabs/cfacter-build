@@ -30,6 +30,7 @@ install/$(arch)/$(boost_)/._.install: build/$(arch)/$(boost_)/._.make
 		--with-system \
 		--with-thread \
 		--with-locale \
+		--with-chrono \
 		--disable-icu \
 		install \
 	) $(t) $@.log
